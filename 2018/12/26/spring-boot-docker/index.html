@@ -1,0 +1,345 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="杨文生的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://xinglinglove.cn">
+    <!--SEO-->
+
+    <meta name="keywords" content="spring-boot,docker">
+
+
+    <meta name="description" content="1、 部署环境（docker安装步骤参考之前的博客）JDK1.8、Docker1.13.1、CentOS7.02、docker开启远程访问1[root@xinglinglove ~]# vim ...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>spring-boot整合docker插件实现项目部署 | 杨文生的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="杨文生的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(/img/banner.jpg)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="杨文生">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 此刻，从这里启程 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://xinglinglove.cn">杨文生的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/前端/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/后端/"><i class="fa "></i>后端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/"><i class="fa "></i>Linux</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/util/"><i class="fa "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="spring-boot整合docker插件实现项目部署">
+            
+	            spring-boot整合docker插件实现项目部署
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/spring-boot/">spring-boot</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/docker/">docker</a> <a class="tag-link" href="/tags/spring-boot/">spring-boot</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/12/26</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="1、-部署环境（docker安装步骤参考之前的博客）"><a href="#1、-部署环境（docker安装步骤参考之前的博客）" class="headerlink" title="1、 部署环境（docker安装步骤参考之前的博客）"></a>1、 部署环境（docker安装步骤参考之前的博客）</h2><h3 id="JDK1-8、Docker1-13-1、CentOS7-0"><a href="#JDK1-8、Docker1-13-1、CentOS7-0" class="headerlink" title="JDK1.8、Docker1.13.1、CentOS7.0"></a>JDK1.8、Docker1.13.1、CentOS7.0</h3><h2 id="2、docker开启远程访问"><a href="#2、docker开启远程访问" class="headerlink" title="2、docker开启远程访问"></a>2、docker开启远程访问</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove ~]<span class="comment"># vim /lib/systemd/system/docker.service</span></span><br></pre></td></tr></table></figure>
+<h2 id="2、docker开启远程访问-1"><a href="#2、docker开启远程访问-1" class="headerlink" title="2、docker开启远程访问"></a>2、docker开启远程访问</h2><h3 id="红色部分为新增内容"><a href="#红色部分为新增内容" class="headerlink" title="红色部分为新增内容"></a>红色部分为新增内容</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Docker Application Container Engine</span><br><span class="line">Documentation=http://docs.docker.com</span><br><span class="line">After=network.target rhel-push-plugin.socket registries.service</span><br><span class="line">Wants=docker-storage-setup.service</span><br><span class="line">Requires=docker-cleanup.timer</span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">NotifyAccess=all</span><br><span class="line">EnvironmentFile=-/run/containers/registries.conf</span><br><span class="line">EnvironmentFile=-/etc/sysconfig/docker</span><br><span class="line">EnvironmentFile=-/etc/sysconfig/docker-storage</span><br><span class="line">EnvironmentFile=-/etc/sysconfig/docker-network</span><br><span class="line">Environment=GOTRACEBACK=crash</span><br><span class="line">Environment=DOCKER_HTTP_HOST_COMPAT=1</span><br><span class="line">Environment=PATH=/usr/libexec/docker:/usr/bin:/usr/sbin</span><br><span class="line">ExecStart=/usr/bin/dockerd-current \</span><br><span class="line">          --add-runtime docker-runc=/usr/libexec/docker/docker-runc-current \</span><br><span class="line">          --default-runtime=docker-runc \</span><br><span class="line">          --<span class="built_in">exec</span>-opt native.cgroupdriver=systemd \</span><br><span class="line">          --userland-proxy-path=/usr/libexec/docker/docker-proxy-current \</span><br><span class="line">          --seccomp-profile=/etc/docker/seccomp.json \</span><br><span class="line">          -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock \</span><br><span class="line">          <span class="variable">$OPTIONS</span> \</span><br><span class="line">          <span class="variable">$DOCKER_STORAGE_OPTIONS</span> \</span><br><span class="line">          <span class="variable">$DOCKER_NETWORK_OPTIONS</span> \</span><br><span class="line">          <span class="variable">$ADD_REGISTRY</span> \</span><br><span class="line">          <span class="variable">$BLOCK_REGISTRY</span> \</span><br><span class="line">          <span class="variable">$INSECURE_REGISTRY</span> \</span><br><span class="line">          <span class="variable">$REGISTRIES</span></span><br><span class="line">ExecReload=/bin/<span class="built_in">kill</span> -s HUP <span class="variable">$MAINPID</span></span><br><span class="line">LimitNOFILE=1048576</span><br><span class="line">LimitNPROC=1048576</span><br><span class="line">LimitCORE=infinity</span><br><span class="line">TimeoutStartSec=0</span><br><span class="line">Restart=on-abnormal</span><br><span class="line">MountFlags=slave</span><br><span class="line">KillMode=process</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+<h2 id="3-重启docker"><a href="#3-重启docker" class="headerlink" title="3.重启docker"></a>3.重启docker</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove ~]<span class="comment">#  systemctl daemon-reload    </span></span><br><span class="line">[root@xinglinglove ~]<span class="comment">#  systemctl restart docker.service</span></span><br></pre></td></tr></table></figure>
+<h2 id="4-测试是否生效"><a href="#4-测试是否生效" class="headerlink" title="4.测试是否生效"></a>4.测试是否生效</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl http://140.143.0.126:2375/info</span><br><span class="line">返回如下信息代表开启成功</span><br><span class="line">&#123;<span class="string">"ID"</span>:<span class="string">"27LC:PLU7:B5DF:H3KS:QGUH:TABJ:5YJC:DNEV:NEZL:L33Y:BOWB:KOZV"</span>,<span class="string">"Containers"</span>:6,<span class="string">"ContainersRunning"</span>:5,<span class="string">"ContainersP aus ed"</span>:0,<span class="string">"ContainersStopped"</span>:1,<span class="string">"Images"</span>:10,<span class="string">"Driver"</span>:<span class="string">"overlay2"</span>,<span class="string">"DriverStatus"</span>:[[<span class="string">"Backing Filesystem"</span>,<span class="string">"extfs"</span>],[<span class="string">"Supports d_ type"</span>,<span class="string">"true"</span>],[<span class="string">"Native Overlay Diff"</span>,<span class="string">"true"</span>]],<span class="string">"SystemStatus"</span>:null,<span class="string">"Plugins"</span>:&#123;<span class="string">"Volume"</span>:[<span class="string">"local"</span>],<span class="string">"Network"</span>:[<span class="string">"bridge"</span>,<span class="string">"hos t"</span>,<span class="string">"macvlan"</span>,<span class="string">"null"</span>,<span class="string">"overlay"</span>],<span class="string">"Authorization"</span>:null&#125;,<span class="string">"MemoryLimit"</span>:<span class="literal">true</span>,<span class="string">"SwapLimit"</span>:<span class="literal">true</span>,<span class="string">"KernelMemory"</span>:<span class="literal">true</span>,<span class="string">"CpuCfsPeri od"</span>:<span class="literal">true</span>,<span class="string">"CpuCfsQuota"</span>:<span class="literal">true</span>,<span class="string">"CPUShares"</span>:<span class="literal">true</span>,<span class="string">"CPUSet"</span>:<span class="literal">true</span>,<span class="string">"IPv4Forwarding"</span>:<span class="literal">true</span>,<span class="string">"BridgeNfIptables"</span>:<span class="literal">true</span>,<span class="string">"BridgeNfIp6tab les"</span>:<span class="literal">true</span>,<span class="string">"Debug"</span>:<span class="literal">false</span>,<span class="string">"NFd"</span>:50,<span class="string">"OomKillDisable"</span>:<span class="literal">true</span>,<span class="string">"NGoroutines"</span>:44,<span class="string">"SystemTime"</span>:<span class="string">"2019-03-26T16:42:23.723116602+08:0 0"</span>,<span class="string">"LoggingDriver"</span>:<span class="string">"journald"</span>,<span class="string">"CgroupDriver"</span>:<span class="string">"systemd"</span>,<span class="string">"NEventsListener"</span>:0,<span class="string">"KernelVersion"</span>:<span class="string">"3.10.0-693.el7.x86_64"</span>,<span class="string">"PkgV ersion"</span>:<span class="string">"&lt;unknown&gt;"</span>,<span class="string">"OperatingSystem"</span>:<span class="string">"CentOS Linux 7 (Core)"</span>,<span class="string">"OSType"</span>:<span class="string">"linux"</span>,<span class="string">"Architecture"</span>:<span class="string">"x86_64"</span>,<span class="string">"IndexServerAddre ss"</span>:<span class="string">"https://index.docker.io/v1/"</span>,<span class="string">"IndexServerName"</span>:<span class="string">"docker.io"</span>,<span class="string">"RegistryConfig"</span>:&#123;<span class="string">"InsecureRegistryCIDRs"</span>:[<span class="string">"127.0.0.0/8"</span> ],<span class="string">"IndexConfigs"</span>:&#123;<span class="string">"docker.io"</span>:&#123;<span class="string">"Name"</span>:<span class="string">"docker.io"</span>,<span class="string">"Mirrors"</span>:null,<span class="string">"Secure"</span>:<span class="literal">true</span>,<span class="string">"Official"</span>:<span class="literal">true</span>&#125;&#125;,<span class="string">"Mirrors"</span>:[]&#125;,<span class="string">"NCPU"</span>:1, <span class="string">"MemTotal"</span>:1928822784,<span class="string">"DockerRootDir"</span>:<span class="string">"/var/lib/docker"</span>,<span class="string">"HttpProxy"</span>:<span class="string">""</span>,<span class="string">"HttpsProxy"</span>:<span class="string">""</span>,<span class="string">"NoProxy"</span>:<span class="string">""</span>,<span class="string">"Name"</span>:<span class="string">"xinglinglove "</span>,<span class="string">"Labels"</span>:null,<span class="string">"ExperimentalBuild"</span>:<span class="literal">false</span>,<span class="string">"ServerVersion"</span>:<span class="string">"1.13.1"</span>,<span class="string">"ClusterStore"</span>:<span class="string">""</span>,<span class="string">"ClusterAdvertise"</span>:<span class="string">""</span>,<span class="string">"Runtimes"</span>:&#123;<span class="string">" docker-runc"</span>:&#123;<span class="string">"path"</span>:<span class="string">"/usr/libexec/docker/docker-runc-current"</span>&#125;,<span class="string">"runc"</span>:&#123;<span class="string">"path"</span>:<span class="string">"docker-runc"</span>&#125;&#125;,<span class="string">"DefaultRuntime"</span>:<span class="string">"docker- runc"</span>,<span class="string">"Swarm"</span>:&#123;<span class="string">"NodeID"</span>:<span class="string">""</span>,<span class="string">"NodeAddr"</span>:<span class="string">""</span>,<span class="string">"LocalNodeState"</span>:<span class="string">"inactive"</span>,<span class="string">"ControlAvailable"</span>:<span class="literal">false</span>,<span class="string">"Error"</span>:<span class="string">""</span>,<span class="string">"RemoteManagers "</span>:null,<span class="string">"Nodes"</span>:0,<span class="string">"Managers"</span>:0,<span class="string">"Cluster"</span>:&#123;<span class="string">"ID"</span>:<span class="string">""</span>,<span class="string">"Version"</span>:&#123;&#125;,<span class="string">"CreatedAt"</span>:<span class="string">"0001-01-01T00:00:00Z"</span>,<span class="string">"UpdatedAt"</span>:<span class="string">"0001-01-01 T00:00:00Z"</span>,<span class="string">"Spec"</span>:&#123;<span class="string">"Orchestration"</span>:&#123;&#125;,<span class="string">"Raft"</span>:&#123;<span class="string">"ElectionTick"</span>:0,<span class="string">"HeartbeatTick"</span>:0&#125;,<span class="string">"Dispatcher"</span>:&#123;&#125;,<span class="string">"CAConfig"</span>:&#123;&#125;,<span class="string">"TaskDe faults"</span>:&#123;&#125;,<span class="string">"EncryptionConfig"</span>:&#123;<span class="string">"AutoLockManagers"</span>:<span class="literal">false</span>&#125;&#125;&#125;&#125;,<span class="string">"LiveRestoreEnabled"</span>:<span class="literal">false</span>,<span class="string">"Isolation"</span>:<span class="string">""</span>,<span class="string">"InitBinary"</span>:<span class="string">"dock er-init"</span>,<span class="string">"ContainerdCommit"</span>:&#123;<span class="string">"ID"</span>:<span class="string">""</span>,<span class="string">"Expected"</span>:<span class="string">"aa8187dbd3b7ad67d8e5e3a15115d3eef43a7ed1"</span>&#125;,<span class="string">"RuncCommit"</span>:&#123;<span class="string">"ID"</span>:<span class="string">"N/A"</span>,<span class="string">"Ex pected"</span>:<span class="string">"9df8b306d01f59d3a8029be411de015b7304dd8f"</span>&#125;,<span class="string">"InitCommit"</span>:&#123;<span class="string">"ID"</span>:<span class="string">"N/A"</span>,<span class="string">"Expected"</span>:<span class="string">"949e6facb77383876aeff8a6944dde6 6b3089574"</span>&#125;,<span class="string">"SecurityOptions"</span>:[<span class="string">"name=seccomp,profile=/etc/docker/seccomp.json"</span>],<span class="string">"Registries"</span>:[&#123;<span class="string">"Name"</span>:<span class="string">"docker.io"</span>,<span class="string">"Secur e"</span>:<span class="literal">true</span>&#125;]&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="5-在自己的spring-boot项目的pom中添加插件"><a href="#5-在自己的spring-boot项目的pom中添加插件" class="headerlink" title="5.在自己的spring-boot项目的pom中添加插件"></a>5.在自己的spring-boot项目的pom中添加插件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;com.spotify&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;</span><br><span class="line">        docker-maven-plugin</span><br><span class="line">    &lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;0.4.14&lt;/version&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">        &lt;imageName&gt;website&lt;/imageName&gt;</span><br><span class="line">        &lt;dockerDirectory&gt;src/main/docker&lt;/dockerDirectory&gt;</span><br><span class="line">        &lt;dockerHost&gt; http://140.143.0.126:2375&lt;/dockerHost&gt;</span><br><span class="line">        &lt;resources&gt;</span><br><span class="line">            &lt;resource&gt;</span><br><span class="line">            &lt;targetPath&gt;/&lt;/targetPath&gt;</span><br><span class="line">                &lt;directory&gt;<span class="variable">$&#123;project.build.directory&#125;</span> &lt;/directory&gt;</span><br><span class="line">                &lt;include&gt;<span class="variable">$&#123;project.build.finalName&#125;</span>.jar&lt;/include&gt;</span><br><span class="line">            &lt;/resource&gt;</span><br><span class="line">        &lt;/resources&gt;</span><br><span class="line">    &lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="6-在工程中新建src-main-docker目录和Dockerfile文件"><a href="#6-在工程中新建src-main-docker目录和Dockerfile文件" class="headerlink" title="6.在工程中新建src/main/docker目录和Dockerfile文件"></a>6.在工程中新建src/main/docker目录和Dockerfile文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 基于哪个镜像</span></span><br><span class="line">FROM java:8</span><br><span class="line"><span class="comment"># 将本地文件夹挂载到当前容器</span></span><br><span class="line">VOLUME /tmp</span><br><span class="line"><span class="comment"># 拷贝文件到容器，xinglinglove-website-0.0.1-SNAPSHOT.jar这里是maven打包后的名字</span></span><br><span class="line">ADD xinglinglove-website-0.0.1-SNAPSHOT.jar app.jar</span><br><span class="line">RUN bash -c <span class="string">'touch /app.jar'</span></span><br><span class="line"><span class="comment"># 配置容器启动后执行的命令</span></span><br><span class="line">ENTRYPOINT [<span class="string">"java"</span>,<span class="string">"-Djava.security.egd=file:/dev/./urandom"</span>,<span class="string">"-jar"</span>,<span class="string">"/app.jar"</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="7-构建镜像并上传至docker使用maven运行如下命令"><a href="#7-构建镜像并上传至docker使用maven运行如下命令" class="headerlink" title="7.构建镜像并上传至docker使用maven运行如下命令"></a>7.构建镜像并上传至docker使用maven运行如下命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clean package docker:build -DskipTests</span><br></pre></td></tr></table></figure>
+<h2 id="8-上传成功后，在服务器输入docker-imgaes查看镜像是否上传成功"><a href="#8-上传成功后，在服务器输入docker-imgaes查看镜像是否上传成功" class="headerlink" title="8.上传成功后，在服务器输入docker imgaes查看镜像是否上传成功"></a>8.上传成功后，在服务器输入docker imgaes查看镜像是否上传成功</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove nginx]<span class="comment"># docker images</span></span><br><span class="line">REPOSITORY                                   TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">website                                      latest              875823024f38        42 minutes ago      715 MB</span><br></pre></td></tr></table></figure>
+<h2 id="9-新建容器，启动项目"><a href="#9-新建容器，启动项目" class="headerlink" title="9.新建容器，启动项目"></a>9.新建容器，启动项目</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove nginx]<span class="comment"># docker run -t -d -p 8888:8888 website /bin/bash</span></span><br></pre></td></tr></table></figure>
+<h2 id="10-访问项目地址，验证成功（登陆页有点丑，请见谅）"><a href="#10-访问项目地址，验证成功（登陆页有点丑，请见谅）" class="headerlink" title="10.访问项目地址，验证成功（登陆页有点丑，请见谅）"></a>10.访问项目地址，验证成功（登陆页有点丑，请见谅）</h2><h3 id="http-140-143-0-126-8888-login"><a href="#http-140-143-0-126-8888-login" class="headerlink" title="http://140.143.0.126:8888/login"></a><a href="http://140.143.0.126:8888/login" target="_blank" rel="noopener">http://140.143.0.126:8888/login</a></h3><img src="/2018/12/26/spring-boot-docker/spring-boot-docker.png">
+<h2 id="11-推送-image-到-Docker-Hub"><a href="#11-推送-image-到-Docker-Hub" class="headerlink" title="11.推送 image 到 Docker Hub"></a>11.推送 image 到 Docker Hub</h2><h3 id="首先，你在-Docker-Hub-要有注册账号，且创建了相应的库；其次，docker-推送前，先要登录，否则报unauthorized-access-to-the-requested-resource-is-not-authorized的错误"><a href="#首先，你在-Docker-Hub-要有注册账号，且创建了相应的库；其次，docker-推送前，先要登录，否则报unauthorized-access-to-the-requested-resource-is-not-authorized的错误" class="headerlink" title="首先，你在 Docker Hub 要有注册账号，且创建了相应的库；其次，docker 推送前，先要登录，否则报unauthorized: access to the requested resource is not authorized的错误"></a>首先，你在 Docker Hub 要有注册账号，且创建了相应的库；其次，docker 推送前，先要登录，否则报unauthorized: access to the requested resource is not authorized的错误</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove ~]<span class="comment"># docker login</span></span><br><span class="line">Login with your Docker ID to push and pull images from Docker Hub. If you don<span class="string">'t have a Docker ID, head over to https://hub.docker.com to create one.</span></span><br><span class="line"><span class="string">Username: xinglinglove1029</span></span><br><span class="line"><span class="string">Password: </span></span><br><span class="line"><span class="string">Login Succeeded</span></span><br></pre></td></tr></table></figure>
+<h3 id="这里需要将website-v1镜像改名，在名称前加上自己的docker-hub的Docker-ID，即xinglinglove1029"><a href="#这里需要将website-v1镜像改名，在名称前加上自己的docker-hub的Docker-ID，即xinglinglove1029" class="headerlink" title="这里需要将website:v1镜像改名，在名称前加上自己的docker hub的Docker ID，即xinglinglove1029"></a>这里需要将website:v1镜像改名，在名称前加上自己的docker hub的Docker ID，即xinglinglove1029</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove ~]<span class="comment"># docker tag b158f9fff842  xinglinglove1029/website:v1</span></span><br><span class="line">[root@xinglinglove ~]<span class="comment"># docker images</span></span><br><span class="line">REPOSITORY                                   TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">website                                      latest              b158f9fff842        2 days ago          721 MB</span><br><span class="line">xinglinglove1029/website                     v1                  b158f9fff842        2 days ago          721 MB</span><br><span class="line">[root@xinglinglove ~]<span class="comment"># docker push xinglinglove1029/website:v1</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+                <span class="reward-type">
+                    <img class="alipay" src="/img/alipay.jpg"><b>支付宝打赏</b>
+                </span>
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="http://www.xinglinglove.cn" target="_blank">杨文生</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2018/07/23/cron/" class="next-post btn btn-default" title="Cron表达式使用手册">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Cron表达式使用手册</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	<div id="uyan_frame"></div>
+<script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=1966422"></script>
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、-部署环境（docker安装步骤参考之前的博客）"><span class="toc-text">1、 部署环境（docker安装步骤参考之前的博客）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#JDK1-8、Docker1-13-1、CentOS7-0"><span class="toc-text">JDK1.8、Docker1.13.1、CentOS7.0</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、docker开启远程访问"><span class="toc-text">2、docker开启远程访问</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、docker开启远程访问-1"><span class="toc-text">2、docker开启远程访问</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#红色部分为新增内容"><span class="toc-text">红色部分为新增内容</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-重启docker"><span class="toc-text">3.重启docker</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-测试是否生效"><span class="toc-text">4.测试是否生效</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-在自己的spring-boot项目的pom中添加插件"><span class="toc-text">5.在自己的spring-boot项目的pom中添加插件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-在工程中新建src-main-docker目录和Dockerfile文件"><span class="toc-text">6.在工程中新建src/main/docker目录和Dockerfile文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-构建镜像并上传至docker使用maven运行如下命令"><span class="toc-text">7.构建镜像并上传至docker使用maven运行如下命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-上传成功后，在服务器输入docker-imgaes查看镜像是否上传成功"><span class="toc-text">8.上传成功后，在服务器输入docker imgaes查看镜像是否上传成功</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-新建容器，启动项目"><span class="toc-text">9.新建容器，启动项目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-访问项目地址，验证成功（登陆页有点丑，请见谅）"><span class="toc-text">10.访问项目地址，验证成功（登陆页有点丑，请见谅）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#http-140-143-0-126-8888-login"><span class="toc-text">http://140.143.0.126:8888/login</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11-推送-image-到-Docker-Hub"><span class="toc-text">11.推送 image 到 Docker Hub</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#首先，你在-Docker-Hub-要有注册账号，且创建了相应的库；其次，docker-推送前，先要登录，否则报unauthorized-access-to-the-requested-resource-is-not-authorized的错误"><span class="toc-text">首先，你在 Docker Hub 要有注册账号，且创建了相应的库；其次，docker 推送前，先要登录，否则报unauthorized: access to the requested resource is not authorized的错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#这里需要将website-v1镜像改名，在名称前加上自己的docker-hub的Docker-ID，即xinglinglove1029"><span class="toc-text">这里需要将website:v1镜像改名，在名称前加上自己的docker hub的Docker ID，即xinglinglove1029</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2018
+                </span> |
+                <span>
+                    Powered by <a href="http://www.xinglinglove.cn" class="copyright-links" target="_blank" rel="nofollow">杨文生</a>
+                </span> |
+                <span>
+                    备案号：京ICP备18017669号
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+</body>
+</html>
