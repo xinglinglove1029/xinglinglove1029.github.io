@@ -1,0 +1,371 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="杨文生的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://xinglinglove.cn">
+    <!--SEO-->
+
+    <meta name="keywords" content="windows">
+
+
+    <meta name="description" content="
+1、按键盘上的“Windows徽标键+R”组合键，可以调出“运行”窗口
+2、在“运行”窗口中输入“gpedit.msc”
+3、在“运行”窗口输入“gpedit.mac”后点击“确定”按钮，会弹...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>Windows 10系统下如何关闭烦人的自动更新 | 杨文生的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="杨文生的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(/img/banner.jpg)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="杨文生">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 此刻，从这里启程 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://xinglinglove.cn">杨文生的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/前端/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/后端/"><i class="fa "></i>后端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Linux"><i class="fa "></i>Linux</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/面试"><i class="fa "></i>面试</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/工具"><i class="fa "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Windows 10系统下如何关闭烦人的自动更新">
+            
+	            Windows 10系统下如何关闭烦人的自动更新
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/工具/">工具</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/windows/">windows</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/01/27</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <img src="/2019/01/27/close-windows-update/updating.jpg">
+<h2 id="1、按键盘上的“Windows徽标键-R”组合键，可以调出“运行”窗口"><a href="#1、按键盘上的“Windows徽标键-R”组合键，可以调出“运行”窗口" class="headerlink" title="1、按键盘上的“Windows徽标键+R”组合键，可以调出“运行”窗口"></a>1、按键盘上的“Windows徽标键+R”组合键，可以调出“运行”窗口</h2><img src="/2019/01/27/close-windows-update/open_windows_r.jpg">
+<h2 id="2、在“运行”窗口中输入“gpedit-msc”"><a href="#2、在“运行”窗口中输入“gpedit-msc”" class="headerlink" title="2、在“运行”窗口中输入“gpedit.msc”"></a>2、在“运行”窗口中输入“gpedit.msc”</h2><img src="/2019/01/27/close-windows-update/gpedit.jpg">
+<h2 id="3、在“运行”窗口输入“gpedit-mac”后点击“确定”按钮，会弹出“本地策略编辑器-下图-”"><a href="#3、在“运行”窗口输入“gpedit-mac”后点击“确定”按钮，会弹出“本地策略编辑器-下图-”" class="headerlink" title="3、在“运行”窗口输入“gpedit.mac”后点击“确定”按钮，会弹出“本地策略编辑器(下图)”"></a>3、在“运行”窗口输入“gpedit.mac”后点击“确定”按钮，会弹出“本地策略编辑器(下图)”</h2><img src="/2019/01/27/close-windows-update/modify.jpg">
+<h2 id="4、点击“计算机配置”下的“管理模版”，然后点击“管理模版”下的“Windows-组件”，然后在“Windows-组件”下找到“Windows-更新”，点击“Windows-更新”；然后找到右边列表里面的“配置自动更新（下图）"><a href="#4、点击“计算机配置”下的“管理模版”，然后点击“管理模版”下的“Windows-组件”，然后在“Windows-组件”下找到“Windows-更新”，点击“Windows-更新”；然后找到右边列表里面的“配置自动更新（下图）" class="headerlink" title="4、点击“计算机配置”下的“管理模版”，然后点击“管理模版”下的“Windows 组件”，然后在“Windows 组件”下找到“Windows 更新”，点击“Windows 更新”；然后找到右边列表里面的“配置自动更新（下图）"></a>4、点击“计算机配置”下的“管理模版”，然后点击“管理模版”下的“Windows 组件”，然后在“Windows 组件”下找到“Windows 更新”，点击“Windows 更新”；然后找到右边列表里面的“配置自动更新（下图）</h2><img src="/2019/01/27/close-windows-update/windows_update_1.jpg">
+<h2 id="5、双击运行“配置更新”，会弹出“配置更新”窗口；窗口上面的3个单项按钮，默认选中是“未配置”，这里需要修改为“已禁用（下图）”；然后点击“确定”按钮"><a href="#5、双击运行“配置更新”，会弹出“配置更新”窗口；窗口上面的3个单项按钮，默认选中是“未配置”，这里需要修改为“已禁用（下图）”；然后点击“确定”按钮" class="headerlink" title="5、双击运行“配置更新”，会弹出“配置更新”窗口；窗口上面的3个单项按钮，默认选中是“未配置”，这里需要修改为“已禁用（下图）”；然后点击“确定”按钮"></a>5、双击运行“配置更新”，会弹出“配置更新”窗口；窗口上面的3个单项按钮，默认选中是“未配置”，这里需要修改为“已禁用（下图）”；然后点击“确定”按钮</h2><img src="/2019/01/27/close-windows-update/windows_update_2.jpg">
+<h2 id="6、大功告成"><a href="#6、大功告成" class="headerlink" title="6、大功告成"></a>6、大功告成</h2>
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+                <span class="reward-type">
+                    <img class="alipay" src="/img/alipay.jpg"><b>支付宝打赏</b>
+                </span>
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="http://www.xinglinglove.cn" target="_blank">杨文生</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/02/21/linux-commond/" class="pre-post btn btn-default" title="Linux 命令行快捷键">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Linux 命令行快捷键</span>
+        </a>
+    
+    
+        <a href="/2018/12/26/spring-boot-docker/" class="next-post btn btn-default" title="spring-boot整合docker插件实现项目部署">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">spring-boot整合docker插件实现项目部署</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、按键盘上的“Windows徽标键-R”组合键，可以调出“运行”窗口"><span class="toc-text">1、按键盘上的“Windows徽标键+R”组合键，可以调出“运行”窗口</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、在“运行”窗口中输入“gpedit-msc”"><span class="toc-text">2、在“运行”窗口中输入“gpedit.msc”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、在“运行”窗口输入“gpedit-mac”后点击“确定”按钮，会弹出“本地策略编辑器-下图-”"><span class="toc-text">3、在“运行”窗口输入“gpedit.mac”后点击“确定”按钮，会弹出“本地策略编辑器(下图)”</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、点击“计算机配置”下的“管理模版”，然后点击“管理模版”下的“Windows-组件”，然后在“Windows-组件”下找到“Windows-更新”，点击“Windows-更新”；然后找到右边列表里面的“配置自动更新（下图）"><span class="toc-text">4、点击“计算机配置”下的“管理模版”，然后点击“管理模版”下的“Windows 组件”，然后在“Windows 组件”下找到“Windows 更新”，点击“Windows 更新”；然后找到右边列表里面的“配置自动更新（下图）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5、双击运行“配置更新”，会弹出“配置更新”窗口；窗口上面的3个单项按钮，默认选中是“未配置”，这里需要修改为“已禁用（下图）”；然后点击“确定”按钮"><span class="toc-text">5、双击运行“配置更新”，会弹出“配置更新”窗口；窗口上面的3个单项按钮，默认选中是“未配置”，这里需要修改为“已禁用（下图）”；然后点击“确定”按钮</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6、大功告成"><span class="toc-text">6、大功告成</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2018-2019
+                </span> |
+                <span>
+                    Powered by <a href="http://www.xinglinglove.cn" class="copyright-links" target="_blank" rel="nofollow">杨文生</a>  版权所有
+                </span> |
+                <span>
+                    备案号：京ICP备18017669号
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+		<!-- 爆炸红心效果 -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+</body>
+</html>
+<!-- 雪花特效 -->
+<script type="text/javascript" src="\js\snow.js"></script>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/firework.js"></script>

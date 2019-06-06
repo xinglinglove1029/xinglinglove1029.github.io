@@ -1,0 +1,375 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="杨文生的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://xinglinglove.cn">
+    <!--SEO-->
+
+    <meta name="keywords" content="nginx">
+
+
+    <meta name="description" content="1、 什么是nginxNginx是一款高性能的http 服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器。官方测试nginx能够支支撑5万并发链接，并且cpu、内存等资源消耗却非...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>Centos7源码编译安装NGINX | 杨文生的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="杨文生的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(/img/banner.jpg)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="杨文生">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 此刻，从这里启程 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://xinglinglove.cn">杨文生的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/前端/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/后端/"><i class="fa "></i>后端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Linux"><i class="fa "></i>Linux</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/面试"><i class="fa "></i>面试</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/工具"><i class="fa "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Centos7源码编译安装NGINX">
+            
+	            Centos7源码编译安装NGINX
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Linux/">Linux</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/nginx/">nginx</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/05/26</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="1、-什么是nginx"><a href="#1、-什么是nginx" class="headerlink" title="1、 什么是nginx"></a>1、 什么是nginx</h2><p>Nginx是一款高性能的http 服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器。官方测试nginx能够支支撑5万并发链接，并且cpu、内存等资源消耗却非常低，运行非常稳定。</p>
+<h2 id="2、-下载"><a href="#2、-下载" class="headerlink" title="2、 下载"></a>2、 下载</h2><img src="/2018/05/26/install-nginx/downloadNginx.png">
+<p>进入<a href="http://nginx.org/en/download.html" target="_blank" rel="noopener">http://nginx.org/en/download.html</a> 下载nginx1.8.0版本（当前最新稳定版本）。</p>
+<h2 id="3、-nginx安装环境"><a href="#3、-nginx安装环境" class="headerlink" title="3、 nginx安装环境"></a>3、 nginx安装环境</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove ~]<span class="comment"># yum –y install gcc-c++</span></span><br><span class="line">[root@xinglinglove ~]<span class="comment"># yum install -y pcre pcre-devel</span></span><br><span class="line">[root@xinglinglove ~]<span class="comment"># yum install -y zlib zlib-devel</span></span><br><span class="line">[root@xinglinglove ~]<span class="comment"># yum install -y openssl openssl-devel</span></span><br></pre></td></tr></table></figure>
+<h2 id="4、-编译安装"><a href="#4、-编译安装" class="headerlink" title="4、 编译安装"></a>4、 编译安装</h2><h3 id="将nginx-1-8-0-tar-gz拷贝至linux服务器。"><a href="#将nginx-1-8-0-tar-gz拷贝至linux服务器。" class="headerlink" title="将nginx-1.8.0.tar.gz拷贝至linux服务器。"></a>将nginx-1.8.0.tar.gz拷贝至linux服务器。</h3><h3 id="解压："><a href="#解压：" class="headerlink" title="解压："></a>解压：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove ~]<span class="comment"># tar -zxvf nginx-1.8.0.tar.gz</span></span><br><span class="line">[root@xinglinglove ~]<span class="comment"># cd nginx-1.8.0</span></span><br><span class="line">[root@xinglinglove ~]<span class="comment"># mkdir -p /var/temp/nginx</span></span><br><span class="line">[root@xinglinglove ~]<span class="comment"># ./configure \</span></span><br><span class="line">--prefix=/usr/<span class="built_in">local</span>/nginx \</span><br><span class="line">--pid-path=/var/run/nginx/nginx.pid \</span><br><span class="line">--lock-path=/var/lock/nginx.lock \</span><br><span class="line">--error-log-path=/var/<span class="built_in">log</span>/nginx/error.log \</span><br><span class="line">--http-log-path=/var/<span class="built_in">log</span>/nginx/access.log \</span><br><span class="line">--with-http_gzip_static_module \</span><br><span class="line">--http-client-body-temp-path=/var/temp/nginx/client \</span><br><span class="line">--http-proxy-temp-path=/var/temp/nginx/proxy \</span><br><span class="line">--http-fastcgi-temp-path=/var/temp/nginx/fastcgi \</span><br><span class="line">--http-uwsgi-temp-path=/var/temp/nginx/uwsgi \</span><br><span class="line">--http-scgi-temp-path=/var/temp/nginx/scgi</span><br><span class="line">[root@xinglinglove ~]<span class="comment">#make -j 4</span></span><br><span class="line">[root@xinglinglove ~]<span class="comment">#make install</span></span><br></pre></td></tr></table></figure>
+<h2 id="5、启动nginx"><a href="#5、启动nginx" class="headerlink" title="5、启动nginx"></a>5、启动nginx</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove ~]<span class="comment"># cd /usr/local/nginx/sbin/</span></span><br><span class="line">[root@xinglinglove ~]<span class="comment"># ./nginx</span></span><br></pre></td></tr></table></figure>
+<h2 id="6、查询nginx进程"><a href="#6、查询nginx进程" class="headerlink" title="6、查询nginx进程"></a>6、查询nginx进程</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove ~]<span class="comment"># ps -aux |grep nginx</span></span><br><span class="line">root     10478  0.0  0.0  24880   800 ?        Ss   17:19   0:00 nginx: master process ./sbin/nginx</span><br><span class="line">nobody   10479  0.0  0.0  27320  1816 ?        S    17:19   0:00 nginx: worker process</span><br><span class="line">root     12025  0.0  0.0 112704   976 pts/0    R+   17:37   0:00 grep --color=auto nginx</span><br></pre></td></tr></table></figure>
+<h2 id="7、停止nginx"><a href="#7、停止nginx" class="headerlink" title="7、停止nginx"></a>7、停止nginx</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove ~]<span class="comment">#/usr/local/nginx/sbin/nginx -s stop</span></span><br></pre></td></tr></table></figure>
+<h2 id="8、重新加载配置"><a href="#8、重新加载配置" class="headerlink" title="8、重新加载配置"></a>8、重新加载配置</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove ~]<span class="comment">#/usr/local/nginx/sbin/nginx -s reload</span></span><br></pre></td></tr></table></figure>
+<h2 id="9、nginx反向代理"><a href="#9、nginx反向代理" class="headerlink" title="9、nginx反向代理"></a>9、nginx反向代理</h2><h3 id="通常的代理服务器，只用于代理内部网络对Internet的连接请求，客户机必须指定代理服务器-并将本来要直接发送到Web服务器上的http请求发送到代理服务器中由代理服务器向Internet上的web服务器发起请求，最终达到客户机上网的目的。"><a href="#通常的代理服务器，只用于代理内部网络对Internet的连接请求，客户机必须指定代理服务器-并将本来要直接发送到Web服务器上的http请求发送到代理服务器中由代理服务器向Internet上的web服务器发起请求，最终达到客户机上网的目的。" class="headerlink" title="通常的代理服务器，只用于代理内部网络对Internet的连接请求，客户机必须指定代理服务器,并将本来要直接发送到Web服务器上的http请求发送到代理服务器中由代理服务器向Internet上的web服务器发起请求，最终达到客户机上网的目的。"></a>通常的代理服务器，只用于代理内部网络对Internet的连接请求，客户机必须指定代理服务器,并将本来要直接发送到Web服务器上的http请求发送到代理服务器中由代理服务器向Internet上的web服务器发起请求，最终达到客户机上网的目的。</h3><p>而反向代理（Reverse Proxy）方式是指以代理服务器来接受internet上的连接请求，然后将请求转发给内部网络上的服务器，并将从服务器上得到的结果返回给internet上请求连接的客户端，此时代理服务器对外就表现为一个反向代理服务器。</p>
+<h3 id="如下图："><a href="#如下图：" class="headerlink" title="如下图："></a>如下图：</h3><img src="/2018/05/26/install-nginx/nginx_proxy.jpeg">
+<h2 id="10、-nginx反向代理配置-反向代理rabbitmq"><a href="#10、-nginx反向代理配置-反向代理rabbitmq" class="headerlink" title="10、 nginx反向代理配置 (反向代理rabbitmq)"></a>10、 nginx反向代理配置 (反向代理rabbitmq)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#配置一个代理即rabbitmq服务器</span></span><br><span class="line">upstream rabbitmq_server &#123;</span><br><span class="line">            server 192.168.101.5:15672;</span><br><span class="line">        &#125;</span><br><span class="line"><span class="comment">#配置一个虚拟主机</span></span><br><span class="line">    server &#123;</span><br><span class="line">        listen 80;</span><br><span class="line">        server_name rabbitmq.xinglinglove.cn;</span><br><span class="line">        location / &#123;</span><br><span class="line">                proxy_pass http://rabbitmq_server ;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="11、测试"><a href="#11、测试" class="headerlink" title="11、测试"></a>11、测试</h2><h3 id="http-rabbitmq-xinglinglove-cn"><a href="#http-rabbitmq-xinglinglove-cn" class="headerlink" title="http://rabbitmq.xinglinglove.cn"></a><a href="http://rabbitmq.xinglinglove.cn" target="_blank" rel="noopener">http://rabbitmq.xinglinglove.cn</a></h3><img src="/2018/05/26/install-nginx/nginx_proxy_success.png">
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+                <span class="reward-type">
+                    <img class="alipay" src="/img/alipay.jpg"><b>支付宝打赏</b>
+                </span>
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="http://www.xinglinglove.cn" target="_blank">杨文生</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/05/27/install-gitlab/" class="pre-post btn btn-default" title="Centos安装gitlab">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Centos安装gitlab</span>
+        </a>
+    
+    
+        <a href="/2018/03/15/install-mysql-master-slave/" class="next-post btn btn-default" title="Docker搭建mysql 主从复制环境">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Docker搭建mysql 主从复制环境</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、-什么是nginx"><span class="toc-text">1、 什么是nginx</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、-下载"><span class="toc-text">2、 下载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、-nginx安装环境"><span class="toc-text">3、 nginx安装环境</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、-编译安装"><span class="toc-text">4、 编译安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#将nginx-1-8-0-tar-gz拷贝至linux服务器。"><span class="toc-text">将nginx-1.8.0.tar.gz拷贝至linux服务器。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解压："><span class="toc-text">解压：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5、启动nginx"><span class="toc-text">5、启动nginx</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6、查询nginx进程"><span class="toc-text">6、查询nginx进程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7、停止nginx"><span class="toc-text">7、停止nginx</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8、重新加载配置"><span class="toc-text">8、重新加载配置</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9、nginx反向代理"><span class="toc-text">9、nginx反向代理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#通常的代理服务器，只用于代理内部网络对Internet的连接请求，客户机必须指定代理服务器-并将本来要直接发送到Web服务器上的http请求发送到代理服务器中由代理服务器向Internet上的web服务器发起请求，最终达到客户机上网的目的。"><span class="toc-text">通常的代理服务器，只用于代理内部网络对Internet的连接请求，客户机必须指定代理服务器,并将本来要直接发送到Web服务器上的http请求发送到代理服务器中由代理服务器向Internet上的web服务器发起请求，最终达到客户机上网的目的。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#如下图："><span class="toc-text">如下图：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10、-nginx反向代理配置-反向代理rabbitmq"><span class="toc-text">10、 nginx反向代理配置 (反向代理rabbitmq)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11、测试"><span class="toc-text">11、测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#http-rabbitmq-xinglinglove-cn"><span class="toc-text">http://rabbitmq.xinglinglove.cn</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2018-2019
+                </span> |
+                <span>
+                    Powered by <a href="http://www.xinglinglove.cn" class="copyright-links" target="_blank" rel="nofollow">杨文生</a>  版权所有
+                </span> |
+                <span>
+                    备案号：京ICP备18017669号
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+		<!-- 爆炸红心效果 -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+</body>
+</html>
+<!-- 雪花特效 -->
+<script type="text/javascript" src="\js\snow.js"></script>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/firework.js"></script>

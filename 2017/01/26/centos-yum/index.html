@@ -1,0 +1,369 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="杨文生的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://xinglinglove.cn">
+    <!--SEO-->
+
+    <meta name="keywords" content="docker">
+
+
+    <meta name="description" content="一、用Centos镜像搭建本地Yum源由于安装centos后的默认Yum源为centos的官方地址，所以在国内使用很慢甚至无法访问，所以一般的做法都是把默认的Yum源替换成aliyun的Yum源...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>Centos镜像搭建Yum源 | 杨文生的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="杨文生的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(/img/banner.jpg)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="杨文生">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 此刻，从这里启程 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://xinglinglove.cn">杨文生的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/前端/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/后端/"><i class="fa "></i>后端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Linux"><i class="fa "></i>Linux</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/面试"><i class="fa "></i>面试</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/工具"><i class="fa "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Centos镜像搭建Yum源">
+            
+	            Centos镜像搭建Yum源
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Linux/">Linux</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/docker/">docker</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2017/01/26</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="一、用Centos镜像搭建本地Yum源"><a href="#一、用Centos镜像搭建本地Yum源" class="headerlink" title="一、用Centos镜像搭建本地Yum源"></a>一、用Centos镜像搭建本地Yum源</h2><h3 id="由于安装centos后的默认Yum源为centos的官方地址，所以在国内使用很慢甚至无法访问，所以一般的做法都是把默认的Yum源替换成aliyun的Yum源或者163等国内的Yum源-下文介绍如何配置-。-但是以上的方法都是需要网络的，当没有网络的时候就无法使用了，所以还有一个常用的方法就是用Centos的ISO镜像搭建本地Yum源，这样安装软件的速度就会飞快。"><a href="#由于安装centos后的默认Yum源为centos的官方地址，所以在国内使用很慢甚至无法访问，所以一般的做法都是把默认的Yum源替换成aliyun的Yum源或者163等国内的Yum源-下文介绍如何配置-。-但是以上的方法都是需要网络的，当没有网络的时候就无法使用了，所以还有一个常用的方法就是用Centos的ISO镜像搭建本地Yum源，这样安装软件的速度就会飞快。" class="headerlink" title="由于安装centos后的默认Yum源为centos的官方地址，所以在国内使用很慢甚至无法访问，所以一般的做法都是把默认的Yum源替换成aliyun的Yum源或者163等国内的Yum源(下文介绍如何配置)。  但是以上的方法都是需要网络的，当没有网络的时候就无法使用了，所以还有一个常用的方法就是用Centos的ISO镜像搭建本地Yum源，这样安装软件的速度就会飞快。"></a>由于安装centos后的默认Yum源为centos的官方地址，所以在国内使用很慢甚至无法访问，所以一般的做法都是把默认的Yum源替换成aliyun的Yum源或者163等国内的Yum源(下文介绍如何配置)。  但是以上的方法都是需要网络的，当没有网络的时候就无法使用了，所以还有一个常用的方法就是用Centos的ISO镜像搭建本地Yum源，这样安装软件的速度就会飞快。</h3><h3 id="1-安装Centos后默认的Yum源如下"><a href="#1-安装Centos后默认的Yum源如下" class="headerlink" title="1.安装Centos后默认的Yum源如下"></a>1.安装Centos后默认的Yum源如下</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ll /etc/yum.repos.d/</span></span><br><span class="line">总用量 28</span><br><span class="line">-rw-r--r--. 1 root root 1664 11月 30 2016 CentOS-Base.repo</span><br><span class="line">-rw-r--r--. 1 root root 1309 11月 30 2016 CentOS-CR.repo</span><br><span class="line">-rw-r--r--. 1 root root  649 11月 30 2016 CentOS-Debuginfo.repo</span><br><span class="line">-rw-r--r--. 1 root root  314 11月 30 2016 CentOS-fasttrack.repo</span><br><span class="line">-rw-r--r--. 1 root root  630 11月 30 2016 CentOS-Media.repo</span><br><span class="line">-rw-r--r--. 1 root root 1331 11月 30 2016 CentOS-Sources.repo</span><br><span class="line">-rw-r--r--. 1 root root 2893 11月 30 2016 CentOS-Vault.repo</span><br></pre></td></tr></table></figure>
+<h3 id="2-把默认Yum源备份-可选"><a href="#2-把默认Yum源备份-可选" class="headerlink" title="2.把默认Yum源备份(可选)"></a>2.把默认Yum源备份(可选)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># mkdir /opt/centos-yum.bak</span></span><br><span class="line">[root@localhost ~]<span class="comment"># mv /etc/yum.repos.d/* /opt/centos-yum.bak/</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-在虚拟机上挂载CentOS镜像文件"><a href="#3-在虚拟机上挂载CentOS镜像文件" class="headerlink" title="3.在虚拟机上挂载CentOS镜像文件"></a>3.在虚拟机上挂载CentOS镜像文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># mkdir /opt/centos</span></span><br><span class="line">[root@localhost ~]<span class="comment"># mount -t iso9660 /dev/sr0 /opt/centos</span></span><br><span class="line">mount: /dev/sr0 写保护，将以只读方式挂载</span><br></pre></td></tr></table></figure>
+<h3 id="4-编写repo文件并指向镜像的挂载目录"><a href="#4-编写repo文件并指向镜像的挂载目录" class="headerlink" title="4.编写repo文件并指向镜像的挂载目录"></a>4.编写repo文件并指向镜像的挂载目录</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># vi /etc/yum.repos.d/local.repo</span></span><br><span class="line">[<span class="built_in">local</span>]</span><br><span class="line">name=<span class="built_in">local</span></span><br><span class="line">baseurl=file:///opt/centos</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=0</span><br></pre></td></tr></table></figure>
+<h3 id="5-清除缓存"><a href="#5-清除缓存" class="headerlink" title="5.清除缓存"></a>5.清除缓存</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># yum clean all</span></span><br><span class="line">已加载插件：fastestmirror, langpacks</span><br><span class="line">正在清理软件源： <span class="built_in">local</span></span><br><span class="line">Cleaning up everything</span><br><span class="line">Cleaning up list of fastest mirrors</span><br><span class="line">[root@localhost ~] <span class="comment"># yum makecache        //把Yum源缓存到本地，加快软件的搜索好安装速度</span></span><br><span class="line">[root@localhost ~] <span class="comment"># yum list</span></span><br></pre></td></tr></table></figure>
+<h2 id="二、把默认的CentOS-Yum源修改成国内的aliyun-Yum源"><a href="#二、把默认的CentOS-Yum源修改成国内的aliyun-Yum源" class="headerlink" title="二、把默认的CentOS Yum源修改成国内的aliyun Yum源"></a>二、把默认的CentOS Yum源修改成国内的aliyun Yum源</h2><h3 id="1-下载aliyun-Yum源repo文件-对应自己的系统版本下载即可"><a href="#1-下载aliyun-Yum源repo文件-对应自己的系统版本下载即可" class="headerlink" title="1.下载aliyun Yum源repo文件(对应自己的系统版本下载即可)"></a>1.下载aliyun Yum源repo文件(对应自己的系统版本下载即可)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#各系统版本repo文件对应的下载操作</span></span><br><span class="line">CentOS 5</span><br><span class="line">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-5.repo</span><br><span class="line">CentOS 6</span><br><span class="line">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo</span><br><span class="line">CentOS 7</span><br><span class="line">wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span><br></pre></td></tr></table></figure>
+<h3 id="2-查看系统的版本"><a href="#2-查看系统的版本" class="headerlink" title="2. 查看系统的版本"></a>2. 查看系统的版本</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># cat /etc/redhat-release</span></span><br><span class="line">CentOS Linux release 7.3.1611 (Core)</span><br></pre></td></tr></table></figure>
+<h3 id="3-下载对应的repo文件"><a href="#3-下载对应的repo文件" class="headerlink" title="3.下载对应的repo文件"></a>3.下载对应的repo文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo</span></span><br><span class="line">--2019-03-11 22:16:35--  http://mirrors.aliyun.com/repo/Centos-7.repo</span><br><span class="line">正在解析主机 mirrors.aliyun.com (mirrors.aliyun.com)... 219.238.20.83, 219.238.20.101, 219.238.20.86, ...</span><br><span class="line">正在连接 mirrors.aliyun.com (mirrors.aliyun.com)|219.238.20.83|:80... 已连接。</span><br><span class="line">已发出 HTTP 请求，正在等待回应... 200 OK</span><br><span class="line">长度：2523 (2.5K) [application/octet-stream]</span><br><span class="line">正在保存至: “/etc/yum.repos.d/CentOS-Base.repo”</span><br><span class="line"></span><br><span class="line">100%[=======================================================================================================================================================================================================&gt;] 2,523       --.-K/s 用时 0.004s  </span><br><span class="line"></span><br><span class="line">2019-03-11 22:16:41 (611 KB/s) - 已保存 “/etc/yum.repos.d/CentOS-Base.repo” [2523/2523])</span><br></pre></td></tr></table></figure>
+<h2 id="三、把默认的CentOS-Yum源修改成国内的163源"><a href="#三、把默认的CentOS-Yum源修改成国内的163源" class="headerlink" title="三、把默认的CentOS Yum源修改成国内的163源"></a>三、把默认的CentOS Yum源修改成国内的163源</h2><h3 id="1-下载163-Yum源repo文件"><a href="#1-下载163-Yum源repo文件" class="headerlink" title="1.下载163 Yum源repo文件"></a>1.下载163 Yum源repo文件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#各系统版本repo文件对应的下载操作</span></span><br><span class="line">CentOS 5</span><br><span class="line">wget -O /etc/yum.repos.d/CentOS5-Base-163.repo http://mirrors.163.com/.<span class="built_in">help</span>/CentOS5-Base-163.repo</span><br><span class="line">CentOS 6</span><br><span class="line">wget -O /etc/yum.repos.d/CentOS6-Base-163.repo http://mirrors.163.com/.<span class="built_in">help</span>/CentOS6-Base-163.repo</span><br><span class="line">CentOS 7</span><br><span class="line">wget -O /etc/yum.repos.d/CentOS7-Base-163.repo http://mirrors.163.com/.<span class="built_in">help</span>/CentOS7-Base-163.repo</span><br></pre></td></tr></table></figure>
+<h2 id="四、修改Yum源的优先级"><a href="#四、修改Yum源的优先级" class="headerlink" title="四、修改Yum源的优先级"></a>四、修改Yum源的优先级</h2><h3 id="1-查看是否安装yum-plugin-priorities-noarch这个插件"><a href="#1-查看是否安装yum-plugin-priorities-noarch这个插件" class="headerlink" title="1.查看是否安装yum-plugin-priorities.noarch这个插件"></a>1.查看是否安装yum-plugin-priorities.noarch这个插件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@kangvcar ~]<span class="comment"># rpm -qa | grep yum-plugin-</span></span><br><span class="line">yum-plugin-fastestmirror-1.1.31-34.el7.noarch</span><br></pre></td></tr></table></figure>
+<h3 id="2-安装yum-plugin-priorities-noarch这个插件"><a href="#2-安装yum-plugin-priorities-noarch这个插件" class="headerlink" title="2.安装yum-plugin-priorities.noarch这个插件"></a>2.安装yum-plugin-priorities.noarch这个插件</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># yum -y install yum-plugin-priorities.noarch</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-查看插件是否启用"><a href="#3-查看插件是否启用" class="headerlink" title="3.查看插件是否启用"></a>3.查看插件是否启用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># cat /etc/yum/pluginconf.d/priorities.conf</span></span><br><span class="line">[main]</span><br><span class="line">enabled = 1</span><br><span class="line">//1为启用；0为禁用</span><br></pre></td></tr></table></figure>
+<h3 id="4-修改本地Yum源优先级别，调整文件中这个参数的值大小（数字越小优先级越高）"><a href="#4-修改本地Yum源优先级别，调整文件中这个参数的值大小（数字越小优先级越高）" class="headerlink" title="4.修改本地Yum源优先级别，调整文件中这个参数的值大小（数字越小优先级越高）"></a>4.修改本地Yum源优先级别，调整文件中这个参数的值大小（数字越小优先级越高）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">priority=1</span><br></pre></td></tr></table></figure>
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+                <span class="reward-type">
+                    <img class="alipay" src="/img/alipay.jpg"><b>支付宝打赏</b>
+                </span>
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="http://www.xinglinglove.cn" target="_blank">杨文生</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2017/01/27/centos6-x-install-docker/" class="pre-post btn btn-default" title="Centos 6.X安装docker">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Centos 6.X安装docker</span>
+        </a>
+    
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、用Centos镜像搭建本地Yum源"><span class="toc-text">一、用Centos镜像搭建本地Yum源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#由于安装centos后的默认Yum源为centos的官方地址，所以在国内使用很慢甚至无法访问，所以一般的做法都是把默认的Yum源替换成aliyun的Yum源或者163等国内的Yum源-下文介绍如何配置-。-但是以上的方法都是需要网络的，当没有网络的时候就无法使用了，所以还有一个常用的方法就是用Centos的ISO镜像搭建本地Yum源，这样安装软件的速度就会飞快。"><span class="toc-text">由于安装centos后的默认Yum源为centos的官方地址，所以在国内使用很慢甚至无法访问，所以一般的做法都是把默认的Yum源替换成aliyun的Yum源或者163等国内的Yum源(下文介绍如何配置)。  但是以上的方法都是需要网络的，当没有网络的时候就无法使用了，所以还有一个常用的方法就是用Centos的ISO镜像搭建本地Yum源，这样安装软件的速度就会飞快。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-安装Centos后默认的Yum源如下"><span class="toc-text">1.安装Centos后默认的Yum源如下</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-把默认Yum源备份-可选"><span class="toc-text">2.把默认Yum源备份(可选)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-在虚拟机上挂载CentOS镜像文件"><span class="toc-text">3.在虚拟机上挂载CentOS镜像文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-编写repo文件并指向镜像的挂载目录"><span class="toc-text">4.编写repo文件并指向镜像的挂载目录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-清除缓存"><span class="toc-text">5.清除缓存</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、把默认的CentOS-Yum源修改成国内的aliyun-Yum源"><span class="toc-text">二、把默认的CentOS Yum源修改成国内的aliyun Yum源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-下载aliyun-Yum源repo文件-对应自己的系统版本下载即可"><span class="toc-text">1.下载aliyun Yum源repo文件(对应自己的系统版本下载即可)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-查看系统的版本"><span class="toc-text">2. 查看系统的版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-下载对应的repo文件"><span class="toc-text">3.下载对应的repo文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、把默认的CentOS-Yum源修改成国内的163源"><span class="toc-text">三、把默认的CentOS Yum源修改成国内的163源</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-下载163-Yum源repo文件"><span class="toc-text">1.下载163 Yum源repo文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、修改Yum源的优先级"><span class="toc-text">四、修改Yum源的优先级</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-查看是否安装yum-plugin-priorities-noarch这个插件"><span class="toc-text">1.查看是否安装yum-plugin-priorities.noarch这个插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-安装yum-plugin-priorities-noarch这个插件"><span class="toc-text">2.安装yum-plugin-priorities.noarch这个插件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-查看插件是否启用"><span class="toc-text">3.查看插件是否启用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-修改本地Yum源优先级别，调整文件中这个参数的值大小（数字越小优先级越高）"><span class="toc-text">4.修改本地Yum源优先级别，调整文件中这个参数的值大小（数字越小优先级越高）</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2018-2019
+                </span> |
+                <span>
+                    Powered by <a href="http://www.xinglinglove.cn" class="copyright-links" target="_blank" rel="nofollow">杨文生</a>  版权所有
+                </span> |
+                <span>
+                    备案号：京ICP备18017669号
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+		<!-- 爆炸红心效果 -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+</body>
+</html>
+<!-- 雪花特效 -->
+<script type="text/javascript" src="\js\snow.js"></script>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/firework.js"></script>

@@ -1,0 +1,363 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="杨文生的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://xinglinglove.cn">
+    <!--SEO-->
+
+    <meta name="keywords" content="linux命令">
+
+
+    <meta name="description" content="1、命令之cat12例子：查看passwd文件内容。[root@VM_24_235_centos ~]# cat /etc/passwd
+注意：cat命令一次显示整个文件的内容，但是在输入显示时...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>Linux文件查询命令 | 杨文生的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="杨文生的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(/img/banner.jpg)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="杨文生">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 此刻，从这里启程 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://xinglinglove.cn">杨文生的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/前端/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/后端/"><i class="fa "></i>后端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Linux"><i class="fa "></i>Linux</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/面试"><i class="fa "></i>面试</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/工具"><i class="fa "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Linux文件查询命令">
+            
+	            Linux文件查询命令
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Linux/">Linux</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/linux命令/">linux命令</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/06/06</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="1、命令之cat"><a href="#1、命令之cat" class="headerlink" title="1、命令之cat"></a>1、命令之cat</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例子：查看passwd文件内容。</span><br><span class="line">[root@VM_24_235_centos ~]<span class="comment"># cat /etc/passwd</span></span><br></pre></td></tr></table></figure>
+<h3 id="注意：cat命令一次显示整个文件的内容，但是在输入显示时，并非一次显示整个文件的内容，这个是cat命令程序的一个缺陷，查看大文件时，会造成一定的困难，尤其是在本地终端时，使用ahift-pgup键上翻，ahift-pgdu键下翻，但是上下翻屏是有限的，一些大的文件，是未必能翻到首部，因为在查看文件时，是把文件加载到内存中再输出，而内存区域是有限的，比如一个文件查看总共50屏，内存只缓存了20屏，那么上下翻也就最多能翻到最后缓存的20屏，cat命令程序只是把文件内容加载到内存中并输出，输出完成后cat命令程序则自动退出。"><a href="#注意：cat命令一次显示整个文件的内容，但是在输入显示时，并非一次显示整个文件的内容，这个是cat命令程序的一个缺陷，查看大文件时，会造成一定的困难，尤其是在本地终端时，使用ahift-pgup键上翻，ahift-pgdu键下翻，但是上下翻屏是有限的，一些大的文件，是未必能翻到首部，因为在查看文件时，是把文件加载到内存中再输出，而内存区域是有限的，比如一个文件查看总共50屏，内存只缓存了20屏，那么上下翻也就最多能翻到最后缓存的20屏，cat命令程序只是把文件内容加载到内存中并输出，输出完成后cat命令程序则自动退出。" class="headerlink" title="注意：cat命令一次显示整个文件的内容，但是在输入显示时，并非一次显示整个文件的内容，这个是cat命令程序的一个缺陷，查看大文件时，会造成一定的困难，尤其是在本地终端时，使用ahift+pgup键上翻，ahift+pgdu键下翻，但是上下翻屏是有限的，一些大的文件，是未必能翻到首部，因为在查看文件时，是把文件加载到内存中再输出，而内存区域是有限的，比如一个文件查看总共50屏，内存只缓存了20屏，那么上下翻也就最多能翻到最后缓存的20屏，cat命令程序只是把文件内容加载到内存中并输出，输出完成后cat命令程序则自动退出。"></a>注意：cat命令一次显示整个文件的内容，但是在输入显示时，并非一次显示整个文件的内容，这个是cat命令程序的一个缺陷，查看大文件时，会造成一定的困难，尤其是在本地终端时，使用ahift+pgup键上翻，ahift+pgdu键下翻，但是上下翻屏是有限的，一些大的文件，是未必能翻到首部，因为在查看文件时，是把文件加载到内存中再输出，而内存区域是有限的，比如一个文件查看总共50屏，内存只缓存了20屏，那么上下翻也就最多能翻到最后缓存的20屏，cat命令程序只是把文件内容加载到内存中并输出，输出完成后cat命令程序则自动退出。</h3><h2 id="2、命令之more"><a href="#2、命令之more" class="headerlink" title="2、命令之more"></a>2、命令之more</h2><h3 id="作用：以分页形式显示文件内容。"><a href="#作用：以分页形式显示文件内容。" class="headerlink" title="作用：以分页形式显示文件内容。"></a>作用：以分页形式显示文件内容。</h3><h3 id="命令使用格式：more-文件名"><a href="#命令使用格式：more-文件名" class="headerlink" title="命令使用格式：more 文件名"></a>命令使用格式：more 文件名</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_24_235_centos ~]<span class="comment"># more  /etc/httpd/conf/httpd.conf</span></span><br></pre></td></tr></table></figure>
+<h3 id="说明：-more命令程序在查看文件，并且显示当前查看文本内容的百分比-，实际上more不支持向前翻，只要没翻到未部，可以向前翻一屏，但不能向前翻一行。"><a href="#说明：-more命令程序在查看文件，并且显示当前查看文本内容的百分比-，实际上more不支持向前翻，只要没翻到未部，可以向前翻一屏，但不能向前翻一行。" class="headerlink" title="说明： more命令程序在查看文件，并且显示当前查看文本内容的百分比 ，实际上more不支持向前翻，只要没翻到未部，可以向前翻一屏，但不能向前翻一行。"></a>说明： more命令程序在查看文件，并且显示当前查看文本内容的百分比 ，实际上more不支持向前翻，只要没翻到未部，可以向前翻一屏，但不能向前翻一行。</h3><h3 id="翻屏操作："><a href="#翻屏操作：" class="headerlink" title="翻屏操作："></a>翻屏操作：</h3><h3 id="向后翻一屏：SPACE-（空格键）"><a href="#向后翻一屏：SPACE-（空格键）" class="headerlink" title="向后翻一屏：SPACE （空格键）"></a>向后翻一屏：SPACE （空格键）</h3><h3 id="向前翻一屏：b-键-（如果翻到最后一屏时，则不能向前翻，此时会自动退出）"><a href="#向前翻一屏：b-键-（如果翻到最后一屏时，则不能向前翻，此时会自动退出）" class="headerlink" title="向前翻一屏：b 键     （如果翻到最后一屏时，则不能向前翻，此时会自动退出）"></a>向前翻一屏：b 键     （如果翻到最后一屏时，则不能向前翻，此时会自动退出）</h3><h3 id="向后翻一行：ENTER-（回车键）"><a href="#向后翻一行：ENTER-（回车键）" class="headerlink" title="向后翻一行：ENTER （回车键）"></a>向后翻一行：ENTER （回车键）</h3><h3 id="退出查看：q键"><a href="#退出查看：q键" class="headerlink" title="退出查看：q键"></a>退出查看：q键</h3><h2 id="3、命令之less"><a href="#3、命令之less" class="headerlink" title="3、命令之less"></a>3、命令之less</h2><h3 id="作用：和more功能一样。"><a href="#作用：和more功能一样。" class="headerlink" title="作用：和more功能一样。"></a>作用：和more功能一样。</h3><h3 id="命令使用格式：less-文件名"><a href="#命令使用格式：less-文件名" class="headerlink" title="命令使用格式：less 文件名"></a>命令使用格式：less 文件名</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_24_235_centos ~]<span class="comment"># lees  /etc/httpd/conf/httpd.conf</span></span><br></pre></td></tr></table></figure>
+<h3 id="说明：实际上man手册是用less打开某个命令的使用手册的，命令都有一个使用手册，在使用man时，man会到命令的使用手册所在位置用less打开命令的使用手册，所以less和使用man时基本相同操作。"><a href="#说明：实际上man手册是用less打开某个命令的使用手册的，命令都有一个使用手册，在使用man时，man会到命令的使用手册所在位置用less打开命令的使用手册，所以less和使用man时基本相同操作。" class="headerlink" title="说明：实际上man手册是用less打开某个命令的使用手册的，命令都有一个使用手册，在使用man时，man会到命令的使用手册所在位置用less打开命令的使用手册，所以less和使用man时基本相同操作。"></a>说明：实际上man手册是用less打开某个命令的使用手册的，命令都有一个使用手册，在使用man时，man会到命令的使用手册所在位置用less打开命令的使用手册，所以less和使用man时基本相同操作。</h3><h3 id="翻屏操作：-1"><a href="#翻屏操作：-1" class="headerlink" title="翻屏操作："></a>翻屏操作：</h3><h3 id="向后翻一屏：SPACE-（空格键）-或：pageup按键。"><a href="#向后翻一屏：SPACE-（空格键）-或：pageup按键。" class="headerlink" title="向后翻一屏：SPACE （空格键）   或：pageup按键。"></a>向后翻一屏：SPACE （空格键）   或：pageup按键。</h3><h3 id="向前翻一屏：b-键-或：pagedown按键。"><a href="#向前翻一屏：b-键-或：pagedown按键。" class="headerlink" title="向前翻一屏：b 键       或：pagedown按键。"></a>向前翻一屏：b 键       或：pagedown按键。</h3><h3 id="向后翻一行：ENTER-（回车键）。"><a href="#向后翻一行：ENTER-（回车键）。" class="headerlink" title="向后翻一行：ENTER （回车键）。"></a>向后翻一行：ENTER （回车键）。</h3><h3 id="向前翻一行：k-键。"><a href="#向前翻一行：k-键。" class="headerlink" title="向前翻一行：k 键。"></a>向前翻一行：k 键。</h3><h3 id="搜索-查找操作：2种方法（默认不区分在小写）"><a href="#搜索-查找操作：2种方法（默认不区分在小写）" class="headerlink" title="搜索/查找操作：2种方法（默认不区分在小写）"></a>搜索/查找操作：2种方法（默认不区分在小写）</h3><h3 id="关键字-可以搜索关键字：在所处的位置向后查找。"><a href="#关键字-可以搜索关键字：在所处的位置向后查找。" class="headerlink" title="/关键字        #可以搜索关键字：在所处的位置向后查找。"></a>/关键字        #可以搜索关键字：在所处的位置向后查找。</h3><h3 id="？关键字-可以搜索关键字：在所处的位置向前查找。"><a href="#？关键字-可以搜索关键字：在所处的位置向前查找。" class="headerlink" title="？关键字     #可以搜索关键字：在所处的位置向前查找。"></a>？关键字     #可以搜索关键字：在所处的位置向前查找。</h3><h3 id="按-n-键-跳到下一个关键字。"><a href="#按-n-键-跳到下一个关键字。" class="headerlink" title="按 n 键    #跳到下一个关键字。"></a>按 n 键    #跳到下一个关键字。</h3><h3 id="按-b-键-跳到上一个关键字。"><a href="#按-b-键-跳到上一个关键字。" class="headerlink" title="按 b 键   #跳到上一个关键字。"></a>按 b 键   #跳到上一个关键字。</h3><h3 id="退出按-q-键。"><a href="#退出按-q-键。" class="headerlink" title="退出按 q 键。"></a>退出按 q 键。</h3><h3 id="Linux中more与less的区别：more：不支持后退，但几乎不需要加参数，空格键是向后翻屏，Enter键是向后翻一行，在不需要后退的情况下比较方便。less：支持前后翻滚，既可以向前翻屏SPACE-（空格键）或（pageup按键），也可以向后翻屏b-键或（pagedown按键），空格键是向前翻屏，Enter键是向后翻一行。"><a href="#Linux中more与less的区别：more：不支持后退，但几乎不需要加参数，空格键是向后翻屏，Enter键是向后翻一行，在不需要后退的情况下比较方便。less：支持前后翻滚，既可以向前翻屏SPACE-（空格键）或（pageup按键），也可以向后翻屏b-键或（pagedown按键），空格键是向前翻屏，Enter键是向后翻一行。" class="headerlink" title="Linux中more与less的区别：more：不支持后退，但几乎不需要加参数，空格键是向后翻屏，Enter键是向后翻一行，在不需要后退的情况下比较方便。less：支持前后翻滚，既可以向前翻屏SPACE （空格键）或（pageup按键），也可以向后翻屏b 键或（pagedown按键），空格键是向前翻屏，Enter键是向后翻一行。"></a>Linux中more与less的区别：more：不支持后退，但几乎不需要加参数，空格键是向后翻屏，Enter键是向后翻一行，在不需要后退的情况下比较方便。less：支持前后翻滚，既可以向前翻屏SPACE （空格键）或（pageup按键），也可以向后翻屏b 键或（pagedown按键），空格键是向前翻屏，Enter键是向后翻一行。</h3><h2 id="4、命令之head"><a href="#4、命令之head" class="headerlink" title="4、命令之head"></a>4、命令之head</h2><h3 id="作用-用于显示文件的开头的内容。在默认情况下，head命令显示文件的头10行内容。"><a href="#作用-用于显示文件的开头的内容。在默认情况下，head命令显示文件的头10行内容。" class="headerlink" title="作用: 用于显示文件的开头的内容。在默认情况下，head命令显示文件的头10行内容。"></a>作用: 用于显示文件的开头的内容。在默认情况下，head命令显示文件的头10行内容。</h3><h3 id="命令使用格式：head-选项-文件名"><a href="#命令使用格式：head-选项-文件名" class="headerlink" title="命令使用格式：head [选项] 文件名"></a>命令使用格式：head [选项] 文件名</h3><h3 id="选项："><a href="#选项：" class="headerlink" title="选项："></a>选项：</h3><h3 id="n-显示从文件头开始的行数，例：-n-3-查看文件中的开始3行内容，-n的写法支持-n3（选项与选项参数不需要空格），还可以直接-3-指定查看文件的开始3行。"><a href="#n-显示从文件头开始的行数，例：-n-3-查看文件中的开始3行内容，-n的写法支持-n3（选项与选项参数不需要空格），还可以直接-3-指定查看文件的开始3行。" class="headerlink" title="-n 显示从文件头开始的行数，例：-n 3 查看文件中的开始3行内容，-n的写法支持 -n3（选项与选项参数不需要空格），还可以直接 -3 指定查看文件的开始3行。"></a>-n 显示从文件头开始的行数，例：-n 3 查看文件中的开始3行内容，-n的写法支持 -n3（选项与选项参数不需要空格），还可以直接 -3 指定查看文件的开始3行。</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">例子：查看passwd文件内容。</span><br><span class="line">[root@VM_24_235_centos opt]<span class="comment"># head /etc/passwd</span></span><br><span class="line"></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line"></span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line"></span><br><span class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</span><br><span class="line"></span><br><span class="line">adm:x:3:4:adm:/var/adm:/sbin/nologin</span><br><span class="line"></span><br><span class="line">lp:x:4:7:lp:/var/spool/lpd:/sbin/nologin</span><br><span class="line"></span><br><span class="line">sync:x:5:0:sync:/sbin:/bin/sync</span><br><span class="line"></span><br><span class="line">shutdown:x:6:0:shutdown:/sbin:/sbin/shutdown</span><br><span class="line"></span><br><span class="line">halt:x:7:0:halt:/sbin:/sbin/halt</span><br><span class="line"></span><br><span class="line">mail:x:8:12:mail:/var/spool/mail:/sbin/nologin</span><br><span class="line"></span><br><span class="line">operator:x:11:0:operator:/root:/sbin/nologin</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">[root@VM_24_235_centos opt]<span class="comment"># head -n 3 /etc/passwd    #显示前3行</span></span><br><span class="line"></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line"></span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line"></span><br><span class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">[root@VM_24_235_centos ~]<span class="comment"># head -n3 /etc/passwd                  #-n3 （选项与选项参数不需要空格）的写法。</span></span><br><span class="line"></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line"></span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line"></span><br><span class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">[root@VM_24_235_centos ~]<span class="comment"># head -3 /etc/passwd           #直接 -3 指定查看文件前3行。</span></span><br><span class="line"></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line"></span><br><span class="line">bin:x:1:1:bin:/bin:/sbin/nologin</span><br><span class="line"></span><br><span class="line">daemon:x:2:2:daemon:/sbin:/sbin/nologin</span><br></pre></td></tr></table></figure>
+<h3 id="注意：cat命令一次显示整个文件的内容，但是在输入显示时，并非一次显示整个文件的内容，这个是cat命令程序的一个缺陷，查看大文件时，会造成一定的困难，尤其是在本地终端时，使用ahift-pgup键上翻，ahift-pgdu键下翻，但是上下翻屏是有限的，一些大的文件，是未必能翻到首部，因为在查看文件时，是把文件加载到内存中再输出，而内存区域是有限的，比如一个文件查看总共50屏，内存只缓存了20屏，那么上下翻也就最多能翻到最后缓存的20屏，cat命令程序只是把文件内容加载到内存中并输出，输出完成后cat命令程序则自动退出。-1"><a href="#注意：cat命令一次显示整个文件的内容，但是在输入显示时，并非一次显示整个文件的内容，这个是cat命令程序的一个缺陷，查看大文件时，会造成一定的困难，尤其是在本地终端时，使用ahift-pgup键上翻，ahift-pgdu键下翻，但是上下翻屏是有限的，一些大的文件，是未必能翻到首部，因为在查看文件时，是把文件加载到内存中再输出，而内存区域是有限的，比如一个文件查看总共50屏，内存只缓存了20屏，那么上下翻也就最多能翻到最后缓存的20屏，cat命令程序只是把文件内容加载到内存中并输出，输出完成后cat命令程序则自动退出。-1" class="headerlink" title="注意：cat命令一次显示整个文件的内容，但是在输入显示时，并非一次显示整个文件的内容，这个是cat命令程序的一个缺陷，查看大文件时，会造成一定的困难，尤其是在本地终端时，使用ahift+pgup键上翻，ahift+pgdu键下翻，但是上下翻屏是有限的，一些大的文件，是未必能翻到首部，因为在查看文件时，是把文件加载到内存中再输出，而内存区域是有限的，比如一个文件查看总共50屏，内存只缓存了20屏，那么上下翻也就最多能翻到最后缓存的20屏，cat命令程序只是把文件内容加载到内存中并输出，输出完成后cat命令程序则自动退出。"></a>注意：cat命令一次显示整个文件的内容，但是在输入显示时，并非一次显示整个文件的内容，这个是cat命令程序的一个缺陷，查看大文件时，会造成一定的困难，尤其是在本地终端时，使用ahift+pgup键上翻，ahift+pgdu键下翻，但是上下翻屏是有限的，一些大的文件，是未必能翻到首部，因为在查看文件时，是把文件加载到内存中再输出，而内存区域是有限的，比如一个文件查看总共50屏，内存只缓存了20屏，那么上下翻也就最多能翻到最后缓存的20屏，cat命令程序只是把文件内容加载到内存中并输出，输出完成后cat命令程序则自动退出。</h3><h2 id="5、命令之tail"><a href="#5、命令之tail" class="headerlink" title="5、命令之tail"></a>5、命令之tail</h2><h3 id="作用：用于显示文件中的尾部内容。默认在屏幕上显示指定文件的末尾10行。"><a href="#作用：用于显示文件中的尾部内容。默认在屏幕上显示指定文件的末尾10行。" class="headerlink" title="作用：用于显示文件中的尾部内容。默认在屏幕上显示指定文件的末尾10行。"></a>作用：用于显示文件中的尾部内容。默认在屏幕上显示指定文件的末尾10行。</h3><h3 id="语法：tail-选项-文件名"><a href="#语法：tail-选项-文件名" class="headerlink" title="语法：tail [选项] 文件名"></a>语法：tail [选项] 文件名</h3><h3 id="参数："><a href="#参数：" class="headerlink" title="参数："></a>参数：</h3><h3 id="n-显示文件尾部多少行的内容（n为数字）。"><a href="#n-显示文件尾部多少行的内容（n为数字）。" class="headerlink" title="-n  显示文件尾部多少行的内容（n为数字）。"></a>-n  显示文件尾部多少行的内容（n为数字）。</h3><h3 id="f-动态查看，在查看某个文件时默认查看后10行，显示后并不退查看，等待显示后续追加至此文件的新增内容，并立即显示出来，一般用于查看日志文件。"><a href="#f-动态查看，在查看某个文件时默认查看后10行，显示后并不退查看，等待显示后续追加至此文件的新增内容，并立即显示出来，一般用于查看日志文件。" class="headerlink" title="-f  动态查看，在查看某个文件时默认查看后10行，显示后并不退查看，等待显示后续追加至此文件的新增内容，并立即显示出来，一般用于查看日志文件。"></a>-f  动态查看，在查看某个文件时默认查看后10行，显示后并不退查看，等待显示后续追加至此文件的新增内容，并立即显示出来，一般用于查看日志文件。</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">例子：查看passwd文件内容。</span><br><span class="line">[root@VM_24_235_centos ~]<span class="comment"># tail -n 3 /var/log/secure    #查看最后3行记录。</span></span><br><span class="line"></span><br><span class="line">[root@VM_24_235_centos ~]<span class="comment"># tail -f /var/log/secure      #动态查看到登录成功的日志。</span></span><br><span class="line"></span><br><span class="line">[root@VM_24_235_centos ~]<span class="comment"># ssh root@192.168.1.63       #在另一个终端远程登录Linux，登录成功后。</span></span><br><span class="line"></span><br><span class="line">[root@VM_24_235_centos ~]<span class="comment"># tail -f /var/log/secure      #可以动态查看到登录成功的日志。</span></span><br><span class="line"></span><br><span class="line">Nov 17 00:08:32 VM_24_235_centos sshd[2924]: Acceptedpassword <span class="keyword">for</span> root from 192.168.1.63 port 39904 ssh2</span><br></pre></td></tr></table></figure>
+
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+                <span class="reward-type">
+                    <img class="alipay" src="/img/alipay.jpg"><b>支付宝打赏</b>
+                </span>
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="http://www.xinglinglove.cn" target="_blank">杨文生</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+    
+        <a href="/2019/06/03/centos-install-rabbitmq/" class="next-post btn btn-default" title="Centos7 安装rabbitmq">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Centos7 安装rabbitmq</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、命令之cat"><span class="toc-text">1、命令之cat</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#注意：cat命令一次显示整个文件的内容，但是在输入显示时，并非一次显示整个文件的内容，这个是cat命令程序的一个缺陷，查看大文件时，会造成一定的困难，尤其是在本地终端时，使用ahift-pgup键上翻，ahift-pgdu键下翻，但是上下翻屏是有限的，一些大的文件，是未必能翻到首部，因为在查看文件时，是把文件加载到内存中再输出，而内存区域是有限的，比如一个文件查看总共50屏，内存只缓存了20屏，那么上下翻也就最多能翻到最后缓存的20屏，cat命令程序只是把文件内容加载到内存中并输出，输出完成后cat命令程序则自动退出。"><span class="toc-text">注意：cat命令一次显示整个文件的内容，但是在输入显示时，并非一次显示整个文件的内容，这个是cat命令程序的一个缺陷，查看大文件时，会造成一定的困难，尤其是在本地终端时，使用ahift+pgup键上翻，ahift+pgdu键下翻，但是上下翻屏是有限的，一些大的文件，是未必能翻到首部，因为在查看文件时，是把文件加载到内存中再输出，而内存区域是有限的，比如一个文件查看总共50屏，内存只缓存了20屏，那么上下翻也就最多能翻到最后缓存的20屏，cat命令程序只是把文件内容加载到内存中并输出，输出完成后cat命令程序则自动退出。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、命令之more"><span class="toc-text">2、命令之more</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#作用：以分页形式显示文件内容。"><span class="toc-text">作用：以分页形式显示文件内容。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令使用格式：more-文件名"><span class="toc-text">命令使用格式：more 文件名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#说明：-more命令程序在查看文件，并且显示当前查看文本内容的百分比-，实际上more不支持向前翻，只要没翻到未部，可以向前翻一屏，但不能向前翻一行。"><span class="toc-text">说明： more命令程序在查看文件，并且显示当前查看文本内容的百分比 ，实际上more不支持向前翻，只要没翻到未部，可以向前翻一屏，但不能向前翻一行。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#翻屏操作："><span class="toc-text">翻屏操作：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#向后翻一屏：SPACE-（空格键）"><span class="toc-text">向后翻一屏：SPACE （空格键）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#向前翻一屏：b-键-（如果翻到最后一屏时，则不能向前翻，此时会自动退出）"><span class="toc-text">向前翻一屏：b 键     （如果翻到最后一屏时，则不能向前翻，此时会自动退出）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#向后翻一行：ENTER-（回车键）"><span class="toc-text">向后翻一行：ENTER （回车键）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#退出查看：q键"><span class="toc-text">退出查看：q键</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、命令之less"><span class="toc-text">3、命令之less</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#作用：和more功能一样。"><span class="toc-text">作用：和more功能一样。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令使用格式：less-文件名"><span class="toc-text">命令使用格式：less 文件名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#说明：实际上man手册是用less打开某个命令的使用手册的，命令都有一个使用手册，在使用man时，man会到命令的使用手册所在位置用less打开命令的使用手册，所以less和使用man时基本相同操作。"><span class="toc-text">说明：实际上man手册是用less打开某个命令的使用手册的，命令都有一个使用手册，在使用man时，man会到命令的使用手册所在位置用less打开命令的使用手册，所以less和使用man时基本相同操作。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#翻屏操作：-1"><span class="toc-text">翻屏操作：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#向后翻一屏：SPACE-（空格键）-或：pageup按键。"><span class="toc-text">向后翻一屏：SPACE （空格键）   或：pageup按键。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#向前翻一屏：b-键-或：pagedown按键。"><span class="toc-text">向前翻一屏：b 键       或：pagedown按键。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#向后翻一行：ENTER-（回车键）。"><span class="toc-text">向后翻一行：ENTER （回车键）。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#向前翻一行：k-键。"><span class="toc-text">向前翻一行：k 键。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#搜索-查找操作：2种方法（默认不区分在小写）"><span class="toc-text">搜索/查找操作：2种方法（默认不区分在小写）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#关键字-可以搜索关键字：在所处的位置向后查找。"><span class="toc-text">/关键字        #可以搜索关键字：在所处的位置向后查找。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#？关键字-可以搜索关键字：在所处的位置向前查找。"><span class="toc-text">？关键字     #可以搜索关键字：在所处的位置向前查找。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#按-n-键-跳到下一个关键字。"><span class="toc-text">按 n 键    #跳到下一个关键字。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#按-b-键-跳到上一个关键字。"><span class="toc-text">按 b 键   #跳到上一个关键字。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#退出按-q-键。"><span class="toc-text">退出按 q 键。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux中more与less的区别：more：不支持后退，但几乎不需要加参数，空格键是向后翻屏，Enter键是向后翻一行，在不需要后退的情况下比较方便。less：支持前后翻滚，既可以向前翻屏SPACE-（空格键）或（pageup按键），也可以向后翻屏b-键或（pagedown按键），空格键是向前翻屏，Enter键是向后翻一行。"><span class="toc-text">Linux中more与less的区别：more：不支持后退，但几乎不需要加参数，空格键是向后翻屏，Enter键是向后翻一行，在不需要后退的情况下比较方便。less：支持前后翻滚，既可以向前翻屏SPACE （空格键）或（pageup按键），也可以向后翻屏b 键或（pagedown按键），空格键是向前翻屏，Enter键是向后翻一行。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、命令之head"><span class="toc-text">4、命令之head</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#作用-用于显示文件的开头的内容。在默认情况下，head命令显示文件的头10行内容。"><span class="toc-text">作用: 用于显示文件的开头的内容。在默认情况下，head命令显示文件的头10行内容。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#命令使用格式：head-选项-文件名"><span class="toc-text">命令使用格式：head [选项] 文件名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#选项："><span class="toc-text">选项：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#n-显示从文件头开始的行数，例：-n-3-查看文件中的开始3行内容，-n的写法支持-n3（选项与选项参数不需要空格），还可以直接-3-指定查看文件的开始3行。"><span class="toc-text">-n 显示从文件头开始的行数，例：-n 3 查看文件中的开始3行内容，-n的写法支持 -n3（选项与选项参数不需要空格），还可以直接 -3 指定查看文件的开始3行。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注意：cat命令一次显示整个文件的内容，但是在输入显示时，并非一次显示整个文件的内容，这个是cat命令程序的一个缺陷，查看大文件时，会造成一定的困难，尤其是在本地终端时，使用ahift-pgup键上翻，ahift-pgdu键下翻，但是上下翻屏是有限的，一些大的文件，是未必能翻到首部，因为在查看文件时，是把文件加载到内存中再输出，而内存区域是有限的，比如一个文件查看总共50屏，内存只缓存了20屏，那么上下翻也就最多能翻到最后缓存的20屏，cat命令程序只是把文件内容加载到内存中并输出，输出完成后cat命令程序则自动退出。-1"><span class="toc-text">注意：cat命令一次显示整个文件的内容，但是在输入显示时，并非一次显示整个文件的内容，这个是cat命令程序的一个缺陷，查看大文件时，会造成一定的困难，尤其是在本地终端时，使用ahift+pgup键上翻，ahift+pgdu键下翻，但是上下翻屏是有限的，一些大的文件，是未必能翻到首部，因为在查看文件时，是把文件加载到内存中再输出，而内存区域是有限的，比如一个文件查看总共50屏，内存只缓存了20屏，那么上下翻也就最多能翻到最后缓存的20屏，cat命令程序只是把文件内容加载到内存中并输出，输出完成后cat命令程序则自动退出。</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5、命令之tail"><span class="toc-text">5、命令之tail</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#作用：用于显示文件中的尾部内容。默认在屏幕上显示指定文件的末尾10行。"><span class="toc-text">作用：用于显示文件中的尾部内容。默认在屏幕上显示指定文件的末尾10行。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#语法：tail-选项-文件名"><span class="toc-text">语法：tail [选项] 文件名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数："><span class="toc-text">参数：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#n-显示文件尾部多少行的内容（n为数字）。"><span class="toc-text">-n  显示文件尾部多少行的内容（n为数字）。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#f-动态查看，在查看某个文件时默认查看后10行，显示后并不退查看，等待显示后续追加至此文件的新增内容，并立即显示出来，一般用于查看日志文件。"><span class="toc-text">-f  动态查看，在查看某个文件时默认查看后10行，显示后并不退查看，等待显示后续追加至此文件的新增内容，并立即显示出来，一般用于查看日志文件。</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2018-2019
+                </span> |
+                <span>
+                    Powered by <a href="http://www.xinglinglove.cn" class="copyright-links" target="_blank" rel="nofollow">杨文生</a>  版权所有
+                </span> |
+                <span>
+                    备案号：京ICP备18017669号
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+		<!-- 爆炸红心效果 -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+</body>
+</html>
+<!-- 雪花特效 -->
+<script type="text/javascript" src="\js\snow.js"></script>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/firework.js"></script>

@@ -1,0 +1,377 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="杨文生的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://xinglinglove.cn">
+    <!--SEO-->
+
+    <meta name="keywords" content="redis">
+
+
+    <meta name="description" content="1、安装编译所依赖的软件1[root@xinglinglove ~]# yum -y install gcc gcc-c++ autoconf automake make
+2、去官网下載redi...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>Centos7源码编译安装redis | 杨文生的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="杨文生的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(/img/banner.jpg)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="杨文生">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 此刻，从这里启程 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://xinglinglove.cn">杨文生的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/前端/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/后端/"><i class="fa "></i>后端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Linux"><i class="fa "></i>Linux</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/面试"><i class="fa "></i>面试</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/工具"><i class="fa "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="Centos7源码编译安装redis">
+            
+	            Centos7源码编译安装redis
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/Linux/">Linux</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/redis/">redis</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2018/02/12</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h2 id="1、安装编译所依赖的软件"><a href="#1、安装编译所依赖的软件" class="headerlink" title="1、安装编译所依赖的软件"></a>1、安装编译所依赖的软件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove ~]<span class="comment"># yum -y install gcc gcc-c++ autoconf automake make</span></span><br></pre></td></tr></table></figure>
+<h2 id="2、去官网下載redis"><a href="#2、去官网下載redis" class="headerlink" title="2、去官网下載redis"></a>2、去官网下載redis</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove ~]<span class="comment"># wget http://download.redis.io/releases/redis-4.0.6.tar.gz</span></span><br><span class="line">--2017-12-20 14:50:48--  http://download.redis.io/releases/redis-4.0.6.tar.gz</span><br><span class="line">正在解析主机 download.redis.io (download.redis.io)... 109.74.203.151</span><br><span class="line">正在连接 download.redis.io (download.redis.io)|109.74.203.151|:80... 已连接。</span><br><span class="line">已发出 HTTP 请求，正在等待回应... 200 OK</span><br><span class="line">长度：1723533 (1.6M) [application/x-gzip]</span><br><span class="line">正在保存至: “redis-4.0.6.tar.gz”</span><br><span class="line"></span><br><span class="line">100%[====================================================================================================================================================================================================================================&gt;] 1,723,533    235KB/s 用时 7.8s   </span><br><span class="line"></span><br><span class="line">2017-12-20 14:50:57 (216 KB/s) - 已保存 “redis-4.0.6.tar.gz” [1723533/1723533])</span><br></pre></td></tr></table></figure>
+<h2 id="3、解压"><a href="#3、解压" class="headerlink" title="3、解压"></a>3、解压</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove ~]<span class="comment"># tar -zxvf redis-4.0.6.tar.gz</span></span><br></pre></td></tr></table></figure>
+<h2 id="4、进入解压的目录"><a href="#4、进入解压的目录" class="headerlink" title="4、进入解压的目录"></a>4、进入解压的目录</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@passcloud-test-002 ~]<span class="comment"># cd redis-4.0.6/</span></span><br></pre></td></tr></table></figure>
+<h2 id="5、编译源码-用4核同时编译可以提高编译效率"><a href="#5、编译源码-用4核同时编译可以提高编译效率" class="headerlink" title="5、编译源码(用4核同时编译可以提高编译效率)"></a>5、编译源码(用4核同时编译可以提高编译效率)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@passcloud-test-002 redis-4.0.6]<span class="comment"># make -j 4</span></span><br></pre></td></tr></table></figure>
+<h2 id="6、安装"><a href="#6、安装" class="headerlink" title="6、安装"></a>6、安装</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove redis-4.0.6]<span class="comment"># make install PREFIX=/usr/local/redis</span></span><br><span class="line"><span class="built_in">cd</span> src &amp;&amp; make install</span><br><span class="line">make[1]: 进入目录“/root/redis-4.0.6/src”</span><br><span class="line">    CC Makefile.dep</span><br><span class="line">make[1]: 离开目录“/root/redis-4.0.6/src”</span><br><span class="line">make[1]: 进入目录“/root/redis-4.0.6/src”</span><br><span class="line">Hint: It<span class="string">'s a good idea to run '</span>make <span class="built_in">test</span><span class="string">' ;)</span></span><br><span class="line"><span class="string">    INSTALL install</span></span><br><span class="line"><span class="string">    INSTALL install</span></span><br><span class="line"><span class="string">    INSTALL install</span></span><br><span class="line"><span class="string">    INSTALL install</span></span><br><span class="line"><span class="string">    INSTALL install</span></span><br><span class="line"><span class="string">make[1]: 离开目录“/root/redis-4.0.6/src”</span></span><br></pre></td></tr></table></figure>
+<h2 id="7、添加配置文件-将-usr-local-software-redis-4-0-2目录下的redis-conf文件，复制到之前安装Redis的目录-usr-local-redis-bin中"><a href="#7、添加配置文件-将-usr-local-software-redis-4-0-2目录下的redis-conf文件，复制到之前安装Redis的目录-usr-local-redis-bin中" class="headerlink" title="7、添加配置文件,将/usr/local/software/redis-4.0.2目录下的redis.conf文件，复制到之前安装Redis的目录/usr/local/redis/bin中"></a>7、添加配置文件,将/usr/local/software/redis-4.0.2目录下的redis.conf文件，复制到之前安装Redis的目录/usr/local/redis/bin中</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove bin]<span class="comment"># cp /root/redis-4.0.6/redis.conf /usr/local/redis/bin/</span></span><br></pre></td></tr></table></figure>
+<h2 id="8、修改redis的配置文件"><a href="#8、修改redis的配置文件" class="headerlink" title="8、修改redis的配置文件"></a>8、修改redis的配置文件</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove bin]<span class="comment"># vim /usr/local/redis/bin/redis.conf</span></span><br><span class="line">注释掉 <span class="built_in">bind</span> 127.0.0.1,让所有ip都可以访问redis服务</span><br><span class="line"><span class="comment"># bind 127.0.0.1</span></span><br><span class="line">然后修改protected-mode为no, 才能完成暴漏redis的服务</span><br><span class="line">protected-mode no</span><br><span class="line">修改daemonize为yes，使启动服务时为后台启动</span><br><span class="line">daemonize yes</span><br><span class="line"><span class="comment">#requirepass foobared去掉注释，foobared改为自己的密码，我在这里改为</span></span><br><span class="line">requirepass 123456</span><br></pre></td></tr></table></figure>
+<h2 id="9、启动Redis服务，在Redis的bin目录下运行-redis-server-redis-conf命令"><a href="#9、启动Redis服务，在Redis的bin目录下运行-redis-server-redis-conf命令" class="headerlink" title="9、启动Redis服务，在Redis的bin目录下运行./redis-server redis.conf命令"></a>9、启动Redis服务，在Redis的bin目录下运行./redis-server redis.conf命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove bin]<span class="comment"># ./redis-server ./redis.conf</span></span><br></pre></td></tr></table></figure>
+<h2 id="10、如果想在任何地方输入redis-server命令则需要在-etc-profile文件加入环境变量"><a href="#10、如果想在任何地方输入redis-server命令则需要在-etc-profile文件加入环境变量" class="headerlink" title="10、如果想在任何地方输入redis-server命令则需要在/etc/profile文件加入环境变量"></a>10、如果想在任何地方输入redis-server命令则需要在/etc/profile文件加入环境变量</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove bin]<span class="comment"># vim /etc/profile</span></span><br><span class="line"><span class="comment">#set redis envirenment</span></span><br><span class="line"><span class="built_in">export</span> REDIS_HOME=/usr/<span class="built_in">local</span>/redis/bin</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$JAVA_HOME</span>/bin:<span class="variable">$PATH</span>:<span class="variable">$REDIS_HOME</span></span><br></pre></td></tr></table></figure>
+<h2 id="10、使配置文件生效"><a href="#10、使配置文件生效" class="headerlink" title="10、使配置文件生效"></a>10、使配置文件生效</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove bin]<span class="comment"># source /etc/profile</span></span><br></pre></td></tr></table></figure>
+<h2 id="11、redis的生产环境启动方案"><a href="#11、redis的生产环境启动方案" class="headerlink" title="11、redis的生产环境启动方案"></a>11、redis的生产环境启动方案</h2><h3 id="把redis作为一个系统的daemon进程去运行的，每次系统启动，redis进程一起启动"><a href="#把redis作为一个系统的daemon进程去运行的，每次系统启动，redis进程一起启动" class="headerlink" title="把redis作为一个系统的daemon进程去运行的，每次系统启动，redis进程一起启动"></a>把redis作为一个系统的daemon进程去运行的，每次系统启动，redis进程一起启动</h3><p>（1）redis utils目录下，有个redis_init_script脚本<br>（2）将redis_init_script脚本拷贝到linux的/etc/init.d目录中，将redis_init_script重命名为redis_6379，6379是我们希望这个redis实例监听的端口号<br>（3）修改redis_6379脚本的第6行的REDISPORT，设置为相同的端口号（默认就是6379）<br>（4）创建两个目录：/etc/redis（存放redis的配置文件），/var/redis/6379（存放redis的持久化文件）<br>（5）修改redis配置文件（默认在根目录下，redis.conf），拷贝到/etc/redis目录中，修改名称为6379.conf<br>（6）修改redis.conf中的部分配置为生产环境<br>    daemonize    yes                            让redis以daemon进程运行<br>    pidfile        /var/run/redis_6379.pid     设置redis的pid文件位置<br>    port        6379                        设置redis的监听端口号<br>    dir         /var/redis/6379                设置持久化文件的存储位置<br>（7）启动redis，执行cd /etc/init.d, chmod 755 redis_6379，./redis_6379 start<br>（8）确认redis进程是否启动，ps -ef | grep redis<br>（9）让redis跟随系统启动自动启动</p>
+<pre><code># chkconfig:   2345 90 10
+# description:  Redis is a persistent key-value database
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@xinglinglove bin]<span class="comment"># cp redis_init_script /etc/init.d/</span></span><br><span class="line">[root@xinglinglove bin]<span class="comment"># mv redis_init_script redis_6379</span></span><br><span class="line">[root@xinglinglove bin]<span class="comment"># mkdir -p /var/redis/6379 /etc/redis</span></span><br><span class="line">[root@xinglinglove bin]<span class="comment"># cp /usr/local/redis/bin/redis.conf /etc/redis/</span></span><br><span class="line">[root@xinglinglove redis]<span class="comment"># mv redis.conf 6379.conf</span></span><br><span class="line">[root@xinglinglove bin]<span class="comment"># /etc/init.d/redis_6379 start</span></span><br><span class="line">[root@xinglinglove bin]<span class="comment">#vim  /etc/init.d/redis_6379 </span></span><br><span class="line">加入<span class="comment"># chkconfig:   2345 90 10</span></span><br><span class="line">    <span class="comment"># description:  Redis is a persistent key-value database</span></span><br><span class="line">[root@xinglinglove bin]	chkconfig redis_6379 on</span><br></pre></td></tr></table></figure>
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+                <span class="reward-type">
+                    <img class="alipay" src="/img/alipay.jpg"><b>支付宝打赏</b>
+                </span>
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="http://www.xinglinglove.cn" target="_blank">杨文生</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2018/02/15/install-mysql/" class="pre-post btn btn-default" title="Centos7通过yum安装mysql5.7">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Centos7通过yum安装mysql5.7</span>
+        </a>
+    
+    
+        <a href="/2017/11/26/yum-install-nginx/" class="next-post btn btn-default" title="Centos7通过yum安装nginx">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">Centos7通过yum安装nginx</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1、安装编译所依赖的软件"><span class="toc-text">1、安装编译所依赖的软件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2、去官网下載redis"><span class="toc-text">2、去官网下載redis</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3、解压"><span class="toc-text">3、解压</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4、进入解压的目录"><span class="toc-text">4、进入解压的目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5、编译源码-用4核同时编译可以提高编译效率"><span class="toc-text">5、编译源码(用4核同时编译可以提高编译效率)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6、安装"><span class="toc-text">6、安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7、添加配置文件-将-usr-local-software-redis-4-0-2目录下的redis-conf文件，复制到之前安装Redis的目录-usr-local-redis-bin中"><span class="toc-text">7、添加配置文件,将/usr/local/software/redis-4.0.2目录下的redis.conf文件，复制到之前安装Redis的目录/usr/local/redis/bin中</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8、修改redis的配置文件"><span class="toc-text">8、修改redis的配置文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9、启动Redis服务，在Redis的bin目录下运行-redis-server-redis-conf命令"><span class="toc-text">9、启动Redis服务，在Redis的bin目录下运行./redis-server redis.conf命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10、如果想在任何地方输入redis-server命令则需要在-etc-profile文件加入环境变量"><span class="toc-text">10、如果想在任何地方输入redis-server命令则需要在/etc/profile文件加入环境变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10、使配置文件生效"><span class="toc-text">10、使配置文件生效</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#11、redis的生产环境启动方案"><span class="toc-text">11、redis的生产环境启动方案</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#把redis作为一个系统的daemon进程去运行的，每次系统启动，redis进程一起启动"><span class="toc-text">把redis作为一个系统的daemon进程去运行的，每次系统启动，redis进程一起启动</span></a></li></ol></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2018-2019
+                </span> |
+                <span>
+                    Powered by <a href="http://www.xinglinglove.cn" class="copyright-links" target="_blank" rel="nofollow">杨文生</a>  版权所有
+                </span> |
+                <span>
+                    备案号：京ICP备18017669号
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+		<!-- 爆炸红心效果 -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+</body>
+</html>
+<!-- 雪花特效 -->
+<script type="text/javascript" src="\js\snow.js"></script>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/firework.js"></script>
