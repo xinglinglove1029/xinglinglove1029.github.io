@@ -1,0 +1,366 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!--Setting-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta http-equiv="Cache-Control" content="no-siteapp">
+    <meta http-equiv="Cache-Control" content="no-transform">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="apple-mobile-web-app-capable" content="杨文生的博客">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no,email=no,adress=no">
+    <meta name="browsermode" content="application">
+    <meta name="screen-orientation" content="portrait">
+    <meta name="theme-version" content="1.2.3">
+    <meta name="root" content="/">
+    <link rel="dns-prefetch" href="http://xinglinglove.cn">
+    <!--SEO-->
+
+    <meta name="keywords" content="jvm">
+
+
+    <meta name="description" content="1.JVM GC 相关的参数123456-XX:+PrintGC 输出GC日志-XX:+PrintGCDetails 输出GC的详细日志-XX:+PrintGCTimeStamps 输出GC的时...">
+
+
+
+<meta name="robots" content="all">
+<meta name="google" content="all">
+<meta name="googlebot" content="all">
+<meta name="verify" content="all">
+
+    <!--Title-->
+
+
+<title>如何看懂 JavaGC 日志 | 杨文生的博客</title>
+
+
+    <link rel="alternate" href="/atom.xml" title="杨文生的博客" type="application/atom+xml">
+
+
+    <link rel="icon" href="/favicon.ico">
+
+    
+
+
+
+<link rel="stylesheet" href="/css/bootstrap.min.css?rev=3.3.7">
+<link rel="stylesheet" href="/css/font-awesome.min.css?rev=4.5.0">
+<link rel="stylesheet" href="/css/style.css?rev=@@hash">
+
+
+
+
+    
+	<div class="hide">
+		<script type="text/javascript">
+			var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan class='cnzz_stat_icon_1263868967 hide' %3E%3Cscript%20src%3D%22https%3A%2F%2Fs95.cnzz.com%2Fz_stat.php%3Fweb_id%3D1272564536%22%3E%3C%2Fscript%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s19.cnzz.com/z_stat.php%3Fid%3D1263868967%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+	</div>
+
+
+
+
+
+
+    
+
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
+
+</head>
+
+</html>
+<!--[if lte IE 8]>
+<style>
+    html{ font-size: 1em }
+</style>
+<![endif]-->
+<!--[if lte IE 9]>
+<div style="ie">你使用的浏览器版本过低，为了你更好的阅读体验，请更新浏览器的版本或者使用其他现代浏览器，比如Chrome、Firefox、Safari等。</div>
+<![endif]-->
+
+<body>
+    <header class="main-header" style="background-image:url(/img/banner.jpg)">
+    <div class="main-header-box">
+        <a class="header-avatar" href="/" title="杨文生">
+            <img src="/img/avatar.jpg" alt="logo头像" class="img-responsive center-block">
+        </a>
+        <div class="branding">
+        	<!--<h2 class="text-hide">Snippet主题,从未如此简单有趣</h2>-->
+            
+                <h2> 此刻，从这里启程 </h2>
+            
+    	</div>
+    </div>
+</header>
+    <nav class="main-navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="navbar-header"><span class="nav-toggle-button collapsed pull-right" data-toggle="collapse" data-target="#main-menu" id="mnav">
+                    <span class="sr-only"></span>
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <a class="navbar-brand" href="http://xinglinglove.cn">杨文生的博客</a>
+                </div>
+                <div class="collapse navbar-collapse" id="main-menu">
+                    <ul class="menu">
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/"><i class="fa "></i>首页</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/前端/"><i class="fa "></i>前端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/后端/"><i class="fa "></i>后端</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/Linux"><i class="fa "></i>Linux</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/面试"><i class="fa "></i>面试</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/categories/工具"><i class="fa "></i>工具</a>
+                            </li>
+                        
+                            <li role="presentation" class="text-center">
+                                <a href="/archives/"><i class="fa "></i>时间轴</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <section class="content-wrap">
+        <div class="container">
+            <div class="row">
+                <main class="col-md-8 main-content m-post">
+                    <p id="process"></p>
+<article class="post">
+    <div class="post-head">
+        <h1 id="如何看懂 JavaGC 日志">
+            
+	            如何看懂 JavaGC 日志
+            
+        </h1>
+        <div class="post-meta">
+    
+        <span class="categories-meta fa-wrap">
+            <i class="fa fa-folder-open-o"></i>
+            <a class="category-link" href="/categories/java/">java</a>
+        </span>
+    
+
+    
+        <span class="fa-wrap">
+            <i class="fa fa-tags"></i>
+            <span class="tags-meta">
+                
+                    <a class="tag-link" href="/tags/jvm/">jvm</a>
+                
+            </span>
+        </span>
+    
+
+    
+        
+        <span class="fa-wrap">
+            <i class="fa fa-clock-o"></i>
+            <span class="date-meta">2019/01/26</span>
+        </span>
+        
+            <span class="fa-wrap">
+                <i class="fa fa-eye"></i>
+                <span id="busuanzi_value_page_pv"></span>
+            </span>
+        
+    
+</div>
+            
+            
+    </div>
+    
+    <div class="post-body post-content">
+        <h3 id="1-JVM-GC-相关的参数"><a href="#1-JVM-GC-相关的参数" class="headerlink" title="1.JVM GC 相关的参数"></a>1.JVM GC 相关的参数</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-XX:+PrintGC 输出GC日志</span><br><span class="line">-XX:+PrintGCDetails 输出GC的详细日志</span><br><span class="line">-XX:+PrintGCTimeStamps 输出GC的时间戳（以基准时间的形式）</span><br><span class="line">-XX:+PrintGCDateStamps 输出GC的时间戳（以日期的形式，如 2013-05-04T21:53:59.234+0800）</span><br><span class="line">-XX:+PrintHeapAtGC 在进行GC的前后打印出堆的信息</span><br><span class="line">-Xloggc:../logs/gc.log 日志文件的输出路径</span><br></pre></td></tr></table></figure>
+<h3 id="2-比如在某个应用中，配置："><a href="#2-比如在某个应用中，配置：" class="headerlink" title="2.比如在某个应用中，配置："></a>2.比如在某个应用中，配置：</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-XX:+PrintGCDetails -XX:+PrintGCDateStamps -Xloggc:D:/gc.log</span><br></pre></td></tr></table></figure>
+<h3 id="3-启动后打印如下-GC-日志：YongGC"><a href="#3-启动后打印如下-GC-日志：YongGC" class="headerlink" title="3.启动后打印如下 GC 日志：YongGC"></a>3.启动后打印如下 GC 日志：YongGC</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">2019-04-18T14:52:06.790+0800: 2.653: </span><br><span class="line">[GC (Allocation Failure) </span><br><span class="line">[PSYoungGen: 33280K-&gt;5113K(38400K)] 33280K-&gt;5848K(125952K), 0.0095764 secs] </span><br><span class="line">[Times: user=0.00 sys=0.00, real=0.01 secs]</span><br></pre></td></tr></table></figure>
+<h3 id="含义：2019-04-18T14-52-06-790-0800（当前时间戳）-2-653（应用启动基准时间）-GC-Allocation-Failure-PSYoungGen（表示-Young-GC）-33280K（年轻代回收前大小）-gt-5113K（年轻代回收后大小）-38400K（年轻代总大小）-33280K（整个堆回收前大小）-gt-5848K（整个堆回收后大小）-125952K（堆总大小）-0-0095764（耗时）-secs-Times-user-0-00（用户耗时）-sys-0-00（系统耗时）-real-0-01（实际耗时）-secs"><a href="#含义：2019-04-18T14-52-06-790-0800（当前时间戳）-2-653（应用启动基准时间）-GC-Allocation-Failure-PSYoungGen（表示-Young-GC）-33280K（年轻代回收前大小）-gt-5113K（年轻代回收后大小）-38400K（年轻代总大小）-33280K（整个堆回收前大小）-gt-5848K（整个堆回收后大小）-125952K（堆总大小）-0-0095764（耗时）-secs-Times-user-0-00（用户耗时）-sys-0-00（系统耗时）-real-0-01（实际耗时）-secs" class="headerlink" title="含义：2019-04-18T14:52:06.790+0800（当前时间戳）: 2.653（应用启动基准时间）: [GC (Allocation Failure) [PSYoungGen（表示 Young GC）: 33280K（年轻代回收前大小）-&gt;5113K（年轻代回收后大小）(38400K（年轻代总大小）)] 33280K（整个堆回收前大小）-&gt;5848K（整个堆回收后大小）(125952K（堆总大小）), 0.0095764（耗时） secs] [Times: user=0.00（用户耗时） sys=0.00（系统耗时）, real=0.01（实际耗时） secs]"></a>含义：2019-04-18T14:52:06.790+0800（当前时间戳）: 2.653（应用启动基准时间）: [GC (Allocation Failure) [PSYoungGen（表示 Young GC）: 33280K（年轻代回收前大小）-&gt;5113K（年轻代回收后大小）(38400K（年轻代总大小）)] 33280K（整个堆回收前大小）-&gt;5848K（整个堆回收后大小）(125952K（堆总大小）), 0.0095764（耗时） secs] [Times: user=0.00（用户耗时） sys=0.00（系统耗时）, real=0.01（实际耗时） secs]</h3><h3 id="4-Full-GC"><a href="#4-Full-GC" class="headerlink" title="4.Full GC"></a>4.Full GC</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">2019-04-18T14:52:15.359+0800: 11.222: </span><br><span class="line">[Full GC (Metadata GC Threshold) </span><br><span class="line">[PSYoungGen: 6129K-&gt;0K(143360K)] </span><br><span class="line">[ParOldGen: 13088K-&gt;13236K(55808K)] 19218K-&gt;13236K(199168K), </span><br><span class="line">[Metaspace: 20856K-&gt;20856K(1069056K)], 0.1216713 secs] </span><br><span class="line">[Times: user=0.44 sys=0.02, real=0.12 secs]</span><br></pre></td></tr></table></figure>
+<h3 id="含义：2019-04-18T14-52-15-359-0800（当前时间戳）-11-222（应用启动基准时间）-Full-GC-Metadata-GC-Threshold-PSYoungGen-6129K（年轻代回收前大小）-gt-0K（年轻代回收后大小）-143360K（年轻代总大小）-ParOldGen-13088K（老年代回收前大小）-gt-13236K（老年代回收后大小）-55808K（老年代总大小）-19218K（整个堆回收前大小）-gt-13236K（整个堆回收后大小）-199168K（堆总大小）-Metaspace-20856K（持久代回收前大小）-gt-20856K（持久代回收后大小）-1069056K（持久代总大小）-0-1216713（耗时）-secs-Times-user-0-44（用户耗时）-sys-0-02（系统耗时）-real-0-12（实际耗时）-secs"><a href="#含义：2019-04-18T14-52-15-359-0800（当前时间戳）-11-222（应用启动基准时间）-Full-GC-Metadata-GC-Threshold-PSYoungGen-6129K（年轻代回收前大小）-gt-0K（年轻代回收后大小）-143360K（年轻代总大小）-ParOldGen-13088K（老年代回收前大小）-gt-13236K（老年代回收后大小）-55808K（老年代总大小）-19218K（整个堆回收前大小）-gt-13236K（整个堆回收后大小）-199168K（堆总大小）-Metaspace-20856K（持久代回收前大小）-gt-20856K（持久代回收后大小）-1069056K（持久代总大小）-0-1216713（耗时）-secs-Times-user-0-44（用户耗时）-sys-0-02（系统耗时）-real-0-12（实际耗时）-secs" class="headerlink" title="含义：2019-04-18T14:52:15.359+0800（当前时间戳）: 11.222（应用启动基准时间）: [Full GC (Metadata GC Threshold) [PSYoungGen: 6129K（年轻代回收前大小）-&gt;0K（年轻代回收后大小）(143360K（年轻代总大小）)] [ParOldGen: 13088K（老年代回收前大小）-&gt;13236K（老年代回收后大小）(55808K（老年代总大小）)] 19218K（整个堆回收前大小）-&gt;13236K（整个堆回收后大小）(199168K（堆总大小）), [Metaspace: 20856K（持久代回收前大小）-&gt;20856K（持久代回收后大小）(1069056K（持久代总大小）)], 0.1216713（耗时） secs] [Times: user=0.44（用户耗时） sys=0.02（系统耗时）, real=0.12（实际耗时） secs"></a>含义：2019-04-18T14:52:15.359+0800（当前时间戳）: 11.222（应用启动基准时间）: [Full GC (Metadata GC Threshold) [PSYoungGen: 6129K（年轻代回收前大小）-&gt;0K（年轻代回收后大小）(143360K（年轻代总大小）)] [ParOldGen: 13088K（老年代回收前大小）-&gt;13236K（老年代回收后大小）(55808K（老年代总大小）)] 19218K（整个堆回收前大小）-&gt;13236K（整个堆回收后大小）(199168K（堆总大小）), [Metaspace: 20856K（持久代回收前大小）-&gt;20856K（持久代回收后大小）(1069056K（持久代总大小）)], 0.1216713（耗时） secs] [Times: user=0.44（用户耗时） sys=0.02（系统耗时）, real=0.12（实际耗时） secs</h3>
+    </div>
+    
+        <div class="reward" ontouchstart>
+    <div class="reward-wrap">赏
+        <div class="reward-box">
+            
+                <span class="reward-type">
+                    <img class="alipay" src="/img/alipay.jpg"><b>支付宝打赏</b>
+                </span>
+            
+            
+                <span class="reward-type">
+                    <img class="wechat" src="/img/weixin.jpg"><b>微信打赏</b>
+                </span>
+            
+        </div>
+    </div>
+    <p class="reward-tip">赞赏是不耍流氓的鼓励</p>
+</div>
+
+
+    
+    <div class="post-footer">
+        <div>
+            
+                转载声明：商业转载请联系作者获得授权,非商业转载请注明出处 © <a href="http://www.xinglinglove.cn" target="_blank">杨文生</a>
+            
+        </div>
+        <div>
+            
+        </div>
+    </div>
+</article>
+
+<div class="article-nav prev-next-wrap clearfix">
+    
+        <a href="/2019/01/27/close-windows-update/" class="pre-post btn btn-default" title="Windows 10系统下如何关闭烦人的自动更新">
+            <i class="fa fa-angle-left fa-fw"></i><span class="hidden-lg">上一篇</span>
+            <span class="hidden-xs">Windows 10系统下如何关闭烦人的自动更新</span>
+        </a>
+    
+    
+        <a href="/2018/12/26/spring-boot-docker/" class="next-post btn btn-default" title="spring-boot整合docker插件实现项目部署">
+            <span class="hidden-lg">下一篇</span>
+            <span class="hidden-xs">spring-boot整合docker插件实现项目部署</span><i class="fa fa-angle-right fa-fw"></i>
+        </a>
+    
+</div>
+
+
+    <div id="comments">
+        
+	
+<div id="lv-container" data-id="city" data-uid="MTAyMC8zMzA1MS85NjEz">
+  <script type="text/javascript">
+     (function(d, s) {
+         var j, e = d.getElementsByTagName(s)[0];
+         if (typeof LivereTower === 'function') { return; }
+         j = d.createElement(s);
+         j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+         j.async = true;
+         e.parentNode.insertBefore(j, e);
+     })(document, 'script');
+  </script>
+</div>
+
+
+    </div>
+
+
+
+
+
+                </main>
+                
+                    <aside id="article-toc" role="navigation" class="col-md-4">
+    <div class="widget">
+        <h3 class="title">文章目录</h3>
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-JVM-GC-相关的参数"><span class="toc-text">1.JVM GC 相关的参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-比如在某个应用中，配置："><span class="toc-text">2.比如在某个应用中，配置：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-启动后打印如下-GC-日志：YongGC"><span class="toc-text">3.启动后打印如下 GC 日志：YongGC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#含义：2019-04-18T14-52-06-790-0800（当前时间戳）-2-653（应用启动基准时间）-GC-Allocation-Failure-PSYoungGen（表示-Young-GC）-33280K（年轻代回收前大小）-gt-5113K（年轻代回收后大小）-38400K（年轻代总大小）-33280K（整个堆回收前大小）-gt-5848K（整个堆回收后大小）-125952K（堆总大小）-0-0095764（耗时）-secs-Times-user-0-00（用户耗时）-sys-0-00（系统耗时）-real-0-01（实际耗时）-secs"><span class="toc-text">含义：2019-04-18T14:52:06.790+0800（当前时间戳）: 2.653（应用启动基准时间）: [GC (Allocation Failure) [PSYoungGen（表示 Young GC）: 33280K（年轻代回收前大小）-&gt;5113K（年轻代回收后大小）(38400K（年轻代总大小）)] 33280K（整个堆回收前大小）-&gt;5848K（整个堆回收后大小）(125952K（堆总大小）), 0.0095764（耗时） secs] [Times: user=0.00（用户耗时） sys=0.00（系统耗时）, real=0.01（实际耗时） secs]</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-Full-GC"><span class="toc-text">4.Full GC</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#含义：2019-04-18T14-52-15-359-0800（当前时间戳）-11-222（应用启动基准时间）-Full-GC-Metadata-GC-Threshold-PSYoungGen-6129K（年轻代回收前大小）-gt-0K（年轻代回收后大小）-143360K（年轻代总大小）-ParOldGen-13088K（老年代回收前大小）-gt-13236K（老年代回收后大小）-55808K（老年代总大小）-19218K（整个堆回收前大小）-gt-13236K（整个堆回收后大小）-199168K（堆总大小）-Metaspace-20856K（持久代回收前大小）-gt-20856K（持久代回收后大小）-1069056K（持久代总大小）-0-1216713（耗时）-secs-Times-user-0-44（用户耗时）-sys-0-02（系统耗时）-real-0-12（实际耗时）-secs"><span class="toc-text">含义：2019-04-18T14:52:15.359+0800（当前时间戳）: 11.222（应用启动基准时间）: [Full GC (Metadata GC Threshold) [PSYoungGen: 6129K（年轻代回收前大小）-&gt;0K（年轻代回收后大小）(143360K（年轻代总大小）)] [ParOldGen: 13088K（老年代回收前大小）-&gt;13236K（老年代回收后大小）(55808K（老年代总大小）)] 19218K（整个堆回收前大小）-&gt;13236K（整个堆回收后大小）(199168K（堆总大小）), [Metaspace: 20856K（持久代回收前大小）-&gt;20856K（持久代回收后大小）(1069056K（持久代总大小）)], 0.1216713（耗时） secs] [Times: user=0.44（用户耗时） sys=0.02（系统耗时）, real=0.12（实际耗时） secs</span></a></li></ol>
+        
+    </div>
+</aside>
+
+                
+            </div>
+        </div>
+    </section>
+    <footer class="main-footer">
+    <div class="container">
+        <div class="row">
+        </div>
+    </div>
+</footer>
+
+<a id="back-to-top" class="icon-btn hide">
+	<i class="fa fa-chevron-up"></i>
+</a>
+
+
+
+
+    <div class="copyright">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="busuanzi">
+    
+        访问量:
+        <strong id="busuanzi_value_site_pv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+        &nbsp; | &nbsp;
+        访客数:
+        <strong id="busuanzi_value_site_uv">
+            <i class="fa fa-spinner fa-spin"></i>
+        </strong>
+    
+</div>
+
+            </div>
+            <div class="col-sm-12">
+                <span>Copyright &copy; 2018-2019
+                </span> |
+                <span>
+                    Powered by <a href="http://www.xinglinglove.cn" class="copyright-links" target="_blank" rel="nofollow">杨文生</a>  版权所有
+                </span> |
+                <span>
+                    备案号：京ICP备18017669号
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+<script src="/js/app.js?rev=@@hash"></script>
+
+		<!-- 爆炸红心效果 -->
+<canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+</body>
+</html>
+<!-- 雪花特效 -->
+<script type="text/javascript" src="\js\snow.js"></script>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/love.js"></script>
+<script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+<script type="text/javascript" src="/js/firework.js"></script>
